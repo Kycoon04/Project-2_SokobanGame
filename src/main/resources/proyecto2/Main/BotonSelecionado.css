@@ -1,0 +1,29 @@
+.button:hover{
+    -fx-background-color: rgba(50, 51, 57, 0.5); 
+    -fx-background-radius:10;
+}
+.button{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-border-width: 2px;
+    -fx-border-radius: 10px;
+}
+.check-box .box{
+    -fx-background-color: transparent;
+    -fx-border-color: #323339;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+}
+
+.text-field{
+    -fx-background-color: transparent;
+    -fx-border-color: #323339;
+    -fx-border-width: 0 0 2 0;
+    -fx-border-radius: 5px;
+}
+.choice-box {
+    -fx-background-color: white;
+    -fx-border-color: #323339;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+}
