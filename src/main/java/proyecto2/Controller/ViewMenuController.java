@@ -12,8 +12,8 @@ public class ViewMenuController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-    
-    }    
+
+    }
 
     @FXML
     private void Met_Jugar(ActionEvent event) {
@@ -28,5 +28,5 @@ public class ViewMenuController implements Initializable {
     @FXML
     private void Met_Guardar(ActionEvent event) {
     }
-    
+
 }

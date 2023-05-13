@@ -1,4 +1,4 @@
-    package proyecto2.Main;
+package proyecto2.Main;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -12,7 +12,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FlowController.getInstance().InitializeFlow(stage,null);
+        FlowController.getInstance().InitializeFlow(stage, null);
         stage.setTitle("Sokoban");
         FlowController.getInstance().goMain("ViewMenu");
     }

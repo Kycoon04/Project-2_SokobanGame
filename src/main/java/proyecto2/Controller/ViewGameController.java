@@ -25,7 +25,7 @@ public class ViewGameController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-CargarNivel();
+        CargarNivel();
     }
 
     public void CargarNivel() {
@@ -33,7 +33,7 @@ CargarNivel();
         ImageView imageView;
         StringBuilder builder = new StringBuilder();
         try {
-            File file = new File("C:/Users/jomav/OneDrive/Documentos/OneDrive - Universidad Nacional de Costa Rica/Universidad/lll Semetre/Programación ll/Proyectos/Proyecto2/src/main/resources/proyecto2/Levels/1.txt");
+            File file = new File("src/main/resources/proyecto2/Levels/1.txt");
             InputStream in = new FileInputStream(file);
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
             String line;

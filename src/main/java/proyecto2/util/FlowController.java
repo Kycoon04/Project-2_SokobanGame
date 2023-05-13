@@ -60,7 +60,7 @@ public class FlowController {
             synchronized (FlowController.class) {
                 if (loader == null) {
                     try {
-                        loader = new FXMLLoader(App.class.getResource( name + ".fxml"), this.idioma);
+                        loader = new FXMLLoader(App.class.getResource(name + ".fxml"), this.idioma);
                         loader.load();
                         loaders.put(name, loader);
                     } catch (Exception ex) {
@@ -131,7 +131,7 @@ public class FlowController {
     public static void setIdioma(ResourceBundle idioma) {
         FlowController.idioma = idioma;
     }
-    
+
     public void initialize() {
         this.loaders.clear();
     }
