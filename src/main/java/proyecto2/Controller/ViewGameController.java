@@ -11,18 +11,17 @@ import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Bounds;
 import javafx.scene.Scene;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
 public class ViewGameController implements Initializable {
+
     ImageView Respaldo = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
+    ImageView Respaldo2 = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
     private String[][] MatrizNumber = new String[10][10];
     String[] numeros;
     private int PJ_X;
@@ -49,29 +48,62 @@ public class ViewGameController implements Initializable {
     public void move(KeyEvent event) {
         ImageView PersonajeMove = new ImageView(new Image("/proyecto2/Assets/Personaje.png"));
 
-
         switch (event.getCode()) {
             case UP:
                 if (!MatrizNumber[PJ_Y - 1][PJ_X].equals("1")) {
+                    if (!MatrizNumber[PJ_Y + 1][PJ_X].equals("1")) {
+                        Respaldo = SiguienteRespaldo(PJ_Y - 1, PJ_X);
+                    } else {
+                        Respaldo2 = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
+                        Respaldo = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
+                    }
                     Fisic.add(PersonajeMove, PJ_X, PJ_Y - 1);
+                    Fisic.add(Respaldo2, PJ_X, PJ_Y);
+                    Respaldo2 = Respaldo;
                     PJ_Y--;
                 }
                 break;
             case DOWN:
                 if (!MatrizNumber[PJ_Y + 1][PJ_X].equals("1")) {
+                    if (!MatrizNumber[PJ_Y - 1][PJ_X].equals("1")) {
+                        Respaldo = SiguienteRespaldo(PJ_Y + 1, PJ_X);
+                    } else {
+                        Respaldo2 = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
+                        Respaldo = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
+                    }
                     Fisic.add(PersonajeMove, PJ_X, PJ_Y + 1);
+                    Fisic.add(Respaldo2, PJ_X, PJ_Y);
+                    Respaldo2 = Respaldo;
                     PJ_Y++;
                 }
                 break;
             case LEFT:
                 if (!MatrizNumber[PJ_Y][PJ_X - 1].equals("1")) {
+                    if (!MatrizNumber[PJ_Y][PJ_X + 1].equals("1")) {
+                        Respaldo = SiguienteRespaldo(PJ_Y, PJ_X - 1);
+                    } else {
+                        Respaldo2 = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
+                        Respaldo = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
+                    }
+                    Respaldo = SiguienteRespaldo(PJ_Y, PJ_X - 1);
                     Fisic.add(PersonajeMove, PJ_X - 1, PJ_Y);
+                    Fisic.add(Respaldo2, PJ_X, PJ_Y);
+                    Respaldo2 = Respaldo;
                     PJ_X--;
                 }
                 break;
             case RIGHT:
                 if (!MatrizNumber[PJ_Y][PJ_X + 1].equals("1")) {
+                    if (!MatrizNumber[PJ_Y][PJ_X - 1].equals("1")) {
+                        Respaldo = SiguienteRespaldo(PJ_Y, PJ_X + 1);
+                    } else {
+                        Respaldo2 = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
+                        Respaldo = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
+                    }
+                    Respaldo = SiguienteRespaldo(PJ_Y, PJ_X + 1);
                     Fisic.add(PersonajeMove, PJ_X + 1, PJ_Y);
+                    Fisic.add(Respaldo2, PJ_X, PJ_Y);
+                    Respaldo2 = Respaldo;
                     PJ_X++;
                 }
                 break;
@@ -80,10 +112,28 @@ public class ViewGameController implements Initializable {
         }
     }
 
+    public void RespaldoCondicion(int PJ_Y, int PJ_X, boolean Condicion) {
+        ImageView PersonajeMove = new ImageView(new Image("/proyecto2/Assets/Personaje.png"));
+        if (!MatrizNumber[PJ_Y][PJ_X].equals("1")) {
+                    if (Condicion) {
+                        Respaldo = SiguienteRespaldo(PJ_Y, PJ_X);
+                    } else {
+                        Respaldo2 = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
+                        Respaldo = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
+                    }
+                    Respaldo = SiguienteRespaldo(PJ_Y, PJ_X);
+                    Fisic.add(PersonajeMove, PJ_X, PJ_Y);
+                    Fisic.add(Respaldo2, PJ_X, PJ_Y);
+                    Respaldo2 = Respaldo;
+                }
+    }
+
     public ImageView SiguienteRespaldo(int row, int col) {
         switch (MatrizNumber[row][col]) {
             case "0":
                 return new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
+            case "2":
+                return new ImageView(new Image("/proyecto2/Assets/BloqueCaja.png"));
             case "3":
                 return new ImageView(new Image("/proyecto2/Assets/BloqueDestino.png"));
         }
