@@ -94,23 +94,31 @@ public class ViewGameController implements Initializable {
             if (verificarCaja(PJ_Fila, PJ_Columna, desplazamientoFila, desplazamientoColumna)) {
                 if (!MatrizNumber[PJ_Fila + ((desplazamientoFila + desplazamientoFila) * Math.abs(desplazamientoFila))][PJ_Columna + ((desplazamientoColumna + desplazamientoColumna) * Math.abs(desplazamientoColumna))].equals("1")) {
                     Fisic.add(caja, (PJ_Columna + ((desplazamientoColumna + desplazamientoColumna) * Math.abs(desplazamientoColumna))), (PJ_Fila + ((desplazamientoFila + desplazamientoFila) * Math.abs(desplazamientoFila))));
-                    
-                    if(MatrizRespaldo[PJ_Fila + desplazamientoFila][PJ_Columna + desplazamientoColumna].equals("3")){
-                    MatrizNumber[PJ_Fila + desplazamientoFila][PJ_Columna + desplazamientoColumna] = "3";
-                    Fisic.add(BloqueDestino, PJ_Columna + desplazamientoColumna, PJ_Fila + desplazamientoFila);
-                    }else{
-                    MatrizNumber[PJ_Fila + desplazamientoFila][PJ_Columna + desplazamientoColumna] = "0"; //problema aqui de perder el 3
-                    Fisic.add(tierra, PJ_Columna + desplazamientoColumna, PJ_Fila + desplazamientoFila);
+
+                    if (MatrizRespaldo[PJ_Fila + desplazamientoFila][PJ_Columna + desplazamientoColumna].equals("3")) {
+                        MatrizNumber[PJ_Fila + desplazamientoFila][PJ_Columna + desplazamientoColumna] = "3";
+                        Fisic.add(BloqueDestino, PJ_Columna + desplazamientoColumna, PJ_Fila + desplazamientoFila);
+                    } else {
+                        MatrizNumber[PJ_Fila + desplazamientoFila][PJ_Columna + desplazamientoColumna] = "0"; //problema aqui de perder el 3
+                        Fisic.add(tierra, PJ_Columna + desplazamientoColumna, PJ_Fila + desplazamientoFila);
                     }
                     MatrizNumber[PJ_Fila + ((desplazamientoFila + desplazamientoFila) * Math.abs(desplazamientoFila))][PJ_Columna + ((desplazamientoColumna + desplazamientoColumna) * Math.abs(desplazamientoColumna))] = "2";
-                    
-                    Fisic.add(Respaldo, PJ_Columna, PJ_Fila);
+
+                    if (MatrizRespaldo[PJ_Fila][PJ_Columna].equals("3")) {
+                        Fisic.add(BloqueDestino, PJ_Columna, PJ_Fila);
+                    } else {
+                        Fisic.add(Respaldo, PJ_Columna, PJ_Fila);
+                    }
                     cajaLibre = true;
                 } else {
                     cajaLibre = false;
                 }
             } else {
-                Fisic.add(Respaldo, PJ_Columna, PJ_Fila);
+                if (MatrizRespaldo[PJ_Fila][PJ_Columna].equals("3")) {
+                    Fisic.add(BloqueDestino, PJ_Columna, PJ_Fila);
+                } else {
+                    Fisic.add(Respaldo, PJ_Columna, PJ_Fila);
+                }
             }
             if (cajaLibre) {
                 Fisic.add(PersonajeMove, PJ_Columna + desplazamientoColumna, PJ_Fila + desplazamientoFila);
@@ -119,22 +127,22 @@ public class ViewGameController implements Initializable {
                 PJ_Fila += desplazamientoFila;
             }
         }
-        if(PosibleVictoria()){
+        if (PosibleVictoria()) {
             System.out.println("gano la partida");
         }
     }
 
-    public boolean PosibleVictoria(){
-            for (int i = 0; i < MatrizNumber.length; i++) {
+    public boolean PosibleVictoria() {
+        for (int i = 0; i < MatrizNumber.length; i++) {
             for (int j = 0; j < MatrizNumber.length; j++) {
-                if(MatrizNumber[i][j].equals("3")){
-                return false;
+                if (MatrizNumber[i][j].equals("3")) {
+                    return false;
                 }
             }
         }
         return true;
     }
-    
+
     public ImageView SiguienteRespaldo(int fila, int columna) {
         switch (MatrizNumber[fila][columna]) {
             case "0":
@@ -159,7 +167,7 @@ public class ViewGameController implements Initializable {
         }
         for (int i = 0; i < MatrizNumber.length; i++) {
             for (int j = 0; j < MatrizNumber.length; j++) {
-               MatrizRespaldo[i][j] = MatrizNumber[i][j];
+                MatrizRespaldo[i][j] = MatrizNumber[i][j];
             }
         }
     }
