@@ -24,12 +24,13 @@ public class ViewGameController implements Initializable {
     ImageView Respaldo2 = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
 
     private String[][] MatrizNumber = new String[10][10];
+    private String[][] MatrizRespaldo = new String[10][10];
     String[] numeros;
-    private int PJ_X;
-    private int PJ_Y;
-    private int numRows;
-    private int numCols;
-
+    private int PJ_Columna;
+    private int PJ_Fila;
+    private int numFila;
+    private int numColumna;
+    private int BanderaGanar;
     @FXML
     private GridPane Fisic;
     @FXML
@@ -67,47 +68,75 @@ public class ViewGameController implements Initializable {
         }
     }
 
-    private boolean verificarBorde(int y, int x, int PJ_DY, int PJ_DX) {
-        return MatrizNumber[y + PJ_DY][x + PJ_DX].equals("1");
+    private boolean verificarBorde(int fila, int columna, int desplazamientoFila, int desplazamientoColumna) {
+        return MatrizNumber[fila + desplazamientoFila][columna + desplazamientoColumna].equals("1");
     }
 
-    private boolean verificarCaja(int y, int x, int PJ_DY, int PJ_DX) {
-        return MatrizNumber[y + PJ_DY][x + PJ_DX].equals("2");
+    private boolean verificarCaja(int fila, int columna, int desplazamientoFila, int desplazamientoColumna) {
+        return MatrizNumber[fila + desplazamientoFila][columna + desplazamientoColumna].equals("2");
     }
 
-    private void moverPersonaje(int PJ_DY, int PJ_DX, ImageView PersonajeMove) {
-        ImageView Caja = new ImageView(new Image("/proyecto2/Assets/BloqueCaja.png"));
-        ImageView Tierra = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
-        if (!verificarBorde(PJ_Y, PJ_X, PJ_DY, PJ_DX)) { //Verifica si el campo donde quiere ir es un "1" osea, un borde
+    public void moverPersonaje(int desplazamientoFila, int desplazamientoColumna, ImageView PersonajeMove) {
+        ImageView caja = new ImageView(new Image("/proyecto2/Assets/BloqueCaja.png"));
+        ImageView tierra = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
+        ImageView BloqueDestino = new ImageView(new Image("/proyecto2/Assets/BloqueDestino.png"));
+        boolean cajaLibre = true;
 
-            if (!verificarBorde(PJ_Y - PJ_DY, PJ_X - PJ_DX, PJ_DY, PJ_DX)) { //Verifica si el campo anterior es un borde para hacer la copia de seguridad de la imagen
-                Respaldo2 = SiguienteRespaldo(PJ_Y + PJ_DY, PJ_X + PJ_DX);  //Al ser ImageView, si yo camino, la imagen del bicho se repiterá en varias celdas
+        if (!verificarBorde(PJ_Fila, PJ_Columna, desplazamientoFila, desplazamientoColumna)) { // Verifica si el campo donde quiere ir es un "1", osea, un borde
+            if (!verificarBorde(PJ_Fila - desplazamientoFila, PJ_Columna - desplazamientoColumna, desplazamientoFila, desplazamientoColumna)) {
+                // Verifica si el campo anterior es un borde para hacer la copia de seguridad de la imagen
+                // Al ser ImageView, si yo camino, la imagen del bicho se repetirá en varias celdas
+                Respaldo2 = SiguienteRespaldo(PJ_Fila + desplazamientoFila, PJ_Columna + desplazamientoColumna);
             } else {
                 Respaldo2 = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
                 Respaldo = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
             }
-
-            if (verificarCaja(PJ_Y, PJ_X, PJ_DY, PJ_DX)) {
-                Fisic.add(Caja, (PJ_X + ((PJ_DX + PJ_DX) *  Math.abs(PJ_DX))), (PJ_Y + ((PJ_DY + PJ_DY) * Math.abs(PJ_DY))));
-                MatrizNumber[PJ_Y + PJ_DY][ PJ_X + PJ_DX] = "0";  
-                MatrizNumber[PJ_Y + ((PJ_DY + PJ_DY) * Math.abs(PJ_DY))][PJ_X + ((PJ_DX + PJ_DX) * Math.abs(PJ_DX))] = "2";
-
-                Fisic.add(Tierra, PJ_X + PJ_DX, PJ_Y + PJ_DY);
-                Fisic.add(Respaldo, PJ_X, PJ_Y);
+            if (verificarCaja(PJ_Fila, PJ_Columna, desplazamientoFila, desplazamientoColumna)) {
+                if (!MatrizNumber[PJ_Fila + ((desplazamientoFila + desplazamientoFila) * Math.abs(desplazamientoFila))][PJ_Columna + ((desplazamientoColumna + desplazamientoColumna) * Math.abs(desplazamientoColumna))].equals("1")) {
+                    Fisic.add(caja, (PJ_Columna + ((desplazamientoColumna + desplazamientoColumna) * Math.abs(desplazamientoColumna))), (PJ_Fila + ((desplazamientoFila + desplazamientoFila) * Math.abs(desplazamientoFila))));
+                    
+                    if(MatrizRespaldo[PJ_Fila + desplazamientoFila][PJ_Columna + desplazamientoColumna].equals("3")){
+                    MatrizNumber[PJ_Fila + desplazamientoFila][PJ_Columna + desplazamientoColumna] = "3";
+                    Fisic.add(BloqueDestino, PJ_Columna + desplazamientoColumna, PJ_Fila + desplazamientoFila);
+                    }else{
+                    MatrizNumber[PJ_Fila + desplazamientoFila][PJ_Columna + desplazamientoColumna] = "0"; //problema aqui de perder el 3
+                    Fisic.add(tierra, PJ_Columna + desplazamientoColumna, PJ_Fila + desplazamientoFila);
+                    }
+                    MatrizNumber[PJ_Fila + ((desplazamientoFila + desplazamientoFila) * Math.abs(desplazamientoFila))][PJ_Columna + ((desplazamientoColumna + desplazamientoColumna) * Math.abs(desplazamientoColumna))] = "2";
+                    
+                    Fisic.add(Respaldo, PJ_Columna, PJ_Fila);
+                    cajaLibre = true;
+                } else {
+                    cajaLibre = false;
+                }
             } else {
-                Fisic.add(Respaldo, PJ_X, PJ_Y);
+                Fisic.add(Respaldo, PJ_Columna, PJ_Fila);
             }
-            
-            Fisic.add(PersonajeMove, PJ_X + PJ_DX, PJ_Y + PJ_DY);
-            Respaldo = Respaldo2;
-            PJ_X += PJ_DX;
-            PJ_Y += PJ_DY;
-
+            if (cajaLibre) {
+                Fisic.add(PersonajeMove, PJ_Columna + desplazamientoColumna, PJ_Fila + desplazamientoFila);
+                Respaldo = Respaldo2;
+                PJ_Columna += desplazamientoColumna;
+                PJ_Fila += desplazamientoFila;
+            }
+        }
+        if(PosibleVictoria()){
+            System.out.println("gano la partida");
         }
     }
 
-    public ImageView SiguienteRespaldo(int row, int col) {
-        switch (MatrizNumber[row][col]) {
+    public boolean PosibleVictoria(){
+            for (int i = 0; i < MatrizNumber.length; i++) {
+            for (int j = 0; j < MatrizNumber.length; j++) {
+                if(MatrizNumber[i][j].equals("3")){
+                return false;
+                }
+            }
+        }
+        return true;
+    }
+    
+    public ImageView SiguienteRespaldo(int fila, int columna) {
+        switch (MatrizNumber[fila][columna]) {
             case "0":
                 return new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
             case "2":
@@ -130,9 +159,8 @@ public class ViewGameController implements Initializable {
         }
         for (int i = 0; i < MatrizNumber.length; i++) {
             for (int j = 0; j < MatrizNumber.length; j++) {
-                System.out.print(MatrizNumber[i][j] + " ");
+               MatrizRespaldo[i][j] = MatrizNumber[i][j];
             }
-            System.out.println();
         }
     }
 
@@ -156,32 +184,32 @@ public class ViewGameController implements Initializable {
         numeros = file.split("\\s+");
         CargarMatriz(numeros);
 
-        numRows = Fisic.getRowCount();
-        numCols = Fisic.getColumnCount();
-        for (int row = 0; row < numRows; row++) {
-            for (int col = 0; col < numCols; col++) {
-                switch (MatrizNumber[row][col]) {
+        numFila = Fisic.getRowCount();
+        numColumna = Fisic.getColumnCount();
+        for (int Fila = 0; Fila < numFila; Fila++) {
+            for (int columna = 0; columna < numColumna; columna++) {
+                switch (MatrizNumber[Fila][columna]) {
                     case "0":
                         imageView = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
-                        Fisic.add(imageView, col, row);
+                        Fisic.add(imageView, columna, Fila);
                         break;
                     case "1":
                         imageView = new ImageView(new Image("/proyecto2/Assets/BloqueBloqueo.png"));
-                        Fisic.add(imageView, col, row);
+                        Fisic.add(imageView, columna, Fila);
                         break;
                     case "2":
                         imageView = new ImageView(new Image("/proyecto2/Assets/BloqueCaja.png"));
-                        Fisic.add(imageView, col, row);
+                        Fisic.add(imageView, columna, Fila);
                         break;
                     case "3":
                         imageView = new ImageView(new Image("/proyecto2/Assets/BloqueDestino.png"));
-                        Fisic.add(imageView, col, row);
+                        Fisic.add(imageView, columna, Fila);
                         break;
                     case "4":
                         imageView = new ImageView(new Image("/proyecto2/Assets/Personaje2.png"));
-                        Fisic.add(imageView, col, row);
-                        PJ_X = col;
-                        PJ_Y = row;
+                        Fisic.add(imageView, columna, Fila);
+                        PJ_Columna = columna;
+                        PJ_Fila = Fila;
                         break;
                 }
                 i++;
