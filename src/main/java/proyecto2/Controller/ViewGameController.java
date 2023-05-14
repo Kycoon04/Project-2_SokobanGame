@@ -40,92 +40,52 @@ public class ViewGameController implements Initializable {
         Platform.runLater(() -> {
             Scene scene = root.getScene();
             scene.setOnKeyPressed((KeyEvent event) -> {
-                move(event);
+                MovimientoPersonaje(event);
             });
         });
     }
 
-    public void move(KeyEvent event) {
-        ImageView PersonajeMove = new ImageView(new Image("/proyecto2/Assets/Personaje.png"));
-
+    public void MovimientoPersonaje(KeyEvent event) {
         switch (event.getCode()) {
             case UP:
-                if (!MatrizNumber[PJ_Y - 1][PJ_X].equals("1")) {
-                    if (!MatrizNumber[PJ_Y + 1][PJ_X].equals("1")) {
-                        Respaldo = SiguienteRespaldo(PJ_Y - 1, PJ_X);
-                    } else {
-                        Respaldo2 = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
-                        Respaldo = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
-                    }
-                    Fisic.add(PersonajeMove, PJ_X, PJ_Y - 1);
-                    Fisic.add(Respaldo2, PJ_X, PJ_Y);
-                    Respaldo2 = Respaldo;
-                    PJ_Y--;
-                }
+                moverPersonaje(-1, 0);
                 break;
             case DOWN:
-                if (!MatrizNumber[PJ_Y + 1][PJ_X].equals("1")) {
-                    if (!MatrizNumber[PJ_Y - 1][PJ_X].equals("1")) {
-                        Respaldo = SiguienteRespaldo(PJ_Y + 1, PJ_X);
-                    } else {
-                        Respaldo2 = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
-                        Respaldo = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
-                    }
-                    Fisic.add(PersonajeMove, PJ_X, PJ_Y + 1);
-                    Fisic.add(Respaldo2, PJ_X, PJ_Y);
-                    Respaldo2 = Respaldo;
-                    PJ_Y++;
-                }
+                moverPersonaje(1, 0);
                 break;
             case LEFT:
-                if (!MatrizNumber[PJ_Y][PJ_X - 1].equals("1")) {
-                    if (!MatrizNumber[PJ_Y][PJ_X + 1].equals("1")) {
-                        Respaldo = SiguienteRespaldo(PJ_Y, PJ_X - 1);
-                    } else {
-                        Respaldo2 = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
-                        Respaldo = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
-                    }
-                    Respaldo = SiguienteRespaldo(PJ_Y, PJ_X - 1);
-                    Fisic.add(PersonajeMove, PJ_X - 1, PJ_Y);
-                    Fisic.add(Respaldo2, PJ_X, PJ_Y);
-                    Respaldo2 = Respaldo;
-                    PJ_X--;
-                }
+                moverPersonaje(0, -1);
                 break;
             case RIGHT:
-                if (!MatrizNumber[PJ_Y][PJ_X + 1].equals("1")) {
-                    if (!MatrizNumber[PJ_Y][PJ_X - 1].equals("1")) {
-                        Respaldo = SiguienteRespaldo(PJ_Y, PJ_X + 1);
-                    } else {
-                        Respaldo2 = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
-                        Respaldo = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
-                    }
-                    Respaldo = SiguienteRespaldo(PJ_Y, PJ_X + 1);
-                    Fisic.add(PersonajeMove, PJ_X + 1, PJ_Y);
-                    Fisic.add(Respaldo2, PJ_X, PJ_Y);
-                    Respaldo2 = Respaldo;
-                    PJ_X++;
-                }
+                moverPersonaje(0, 1);
                 break;
             default:
                 break;
         }
     }
 
-    public void RespaldoCondicion(int PJ_Y, int PJ_X, boolean Condicion) {
+    private boolean verificarBorde(int y, int x, int PJ_DY, int PJ_DX) {
+        return MatrizNumber[y + PJ_DY][x + PJ_DX].equals("1");
+    }
+
+    private void moverPersonaje(int PJ_DY, int PJ_DX) {
         ImageView PersonajeMove = new ImageView(new Image("/proyecto2/Assets/Personaje.png"));
-        if (!MatrizNumber[PJ_Y][PJ_X].equals("1")) {
-                    if (Condicion) {
-                        Respaldo = SiguienteRespaldo(PJ_Y, PJ_X);
-                    } else {
-                        Respaldo2 = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
-                        Respaldo = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
-                    }
-                    Respaldo = SiguienteRespaldo(PJ_Y, PJ_X);
-                    Fisic.add(PersonajeMove, PJ_X, PJ_Y);
-                    Fisic.add(Respaldo2, PJ_X, PJ_Y);
-                    Respaldo2 = Respaldo;
-                }
+        if (!verificarBorde(PJ_Y, PJ_X, PJ_DY, PJ_DX)) { //Verifica si el campo donde quiere ir es un "1" osea, un borde
+            
+            if (!verificarBorde(PJ_Y - PJ_DY, PJ_X - PJ_DX, PJ_DY, PJ_DX)) { //Verifica si el campo anterior es un borde para hacer la copia de seguridad de la imagen
+                Respaldo2 = SiguienteRespaldo(PJ_Y + PJ_DY, PJ_X + PJ_DX);   //Al ser ImageView, si yo camino, la imagen del bicho se repiterá en varias celdas
+            } else {
+
+                Respaldo2 = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
+                Respaldo = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
+                
+            }
+            Fisic.add(PersonajeMove, PJ_X + PJ_DX, PJ_Y + PJ_DY);
+            Fisic.add(Respaldo, PJ_X, PJ_Y);
+            Respaldo = Respaldo2;
+            PJ_X += PJ_DX;
+            PJ_Y += PJ_DY;
+        }
     }
 
     public ImageView SiguienteRespaldo(int row, int col) {
