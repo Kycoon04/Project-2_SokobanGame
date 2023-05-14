@@ -22,6 +22,7 @@ public class ViewGameController implements Initializable {
 
     ImageView Respaldo = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
     ImageView Respaldo2 = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
+
     private String[][] MatrizNumber = new String[10][10];
     String[] numeros;
     private int PJ_X;
@@ -49,17 +50,17 @@ public class ViewGameController implements Initializable {
         ImageView PersonajeMove = new ImageView(new Image("/proyecto2/Assets/Personaje.png"));
         switch (event.getCode()) {
             case UP:
-                moverPersonaje(-1, 0,PersonajeMove);
+                moverPersonaje(-1, 0, PersonajeMove);
                 break;
             case DOWN:
-                moverPersonaje(1, 0,PersonajeMove);
+                moverPersonaje(1, 0, PersonajeMove);
                 break;
             case LEFT:
                 PersonajeMove.setImage(new Image("/proyecto2/Assets/PersonajeIzquierda.png"));
-                moverPersonaje(0, -1,PersonajeMove);
+                moverPersonaje(0, -1, PersonajeMove);
                 break;
             case RIGHT:
-                moverPersonaje(0, 1,PersonajeMove);
+                moverPersonaje(0, 1, PersonajeMove);
                 break;
             default:
                 break;
@@ -70,20 +71,38 @@ public class ViewGameController implements Initializable {
         return MatrizNumber[y + PJ_DY][x + PJ_DX].equals("1");
     }
 
-    private void moverPersonaje(int PJ_DY, int PJ_DX,ImageView PersonajeMove) {
+    private boolean verificarCaja(int y, int x, int PJ_DY, int PJ_DX) {
+        return MatrizNumber[y + PJ_DY][x + PJ_DX].equals("2");
+    }
+
+    private void moverPersonaje(int PJ_DY, int PJ_DX, ImageView PersonajeMove) {
+        ImageView Caja = new ImageView(new Image("/proyecto2/Assets/BloqueCaja.png"));
+        ImageView Tierra = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
         if (!verificarBorde(PJ_Y, PJ_X, PJ_DY, PJ_DX)) { //Verifica si el campo donde quiere ir es un "1" osea, un borde
-            
+
             if (!verificarBorde(PJ_Y - PJ_DY, PJ_X - PJ_DX, PJ_DY, PJ_DX)) { //Verifica si el campo anterior es un borde para hacer la copia de seguridad de la imagen
                 Respaldo2 = SiguienteRespaldo(PJ_Y + PJ_DY, PJ_X + PJ_DX);  //Al ser ImageView, si yo camino, la imagen del bicho se repiterá en varias celdas
             } else {
                 Respaldo2 = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
                 Respaldo = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
             }
+
+            if (verificarCaja(PJ_Y, PJ_X, PJ_DY, PJ_DX)) {
+                Fisic.add(Caja, (PJ_X + ((PJ_DX + PJ_DX) *  Math.abs(PJ_DX))), (PJ_Y + ((PJ_DY + PJ_DY) * Math.abs(PJ_DY))));
+                MatrizNumber[PJ_Y + PJ_DY][ PJ_X + PJ_DX] = "0";  
+                MatrizNumber[PJ_Y + ((PJ_DY + PJ_DY) * Math.abs(PJ_DY))][PJ_X + ((PJ_DX + PJ_DX) * Math.abs(PJ_DX))] = "2";
+
+                Fisic.add(Tierra, PJ_X + PJ_DX, PJ_Y + PJ_DY);
+                Fisic.add(Respaldo, PJ_X, PJ_Y);
+            } else {
+                Fisic.add(Respaldo, PJ_X, PJ_Y);
+            }
+            
             Fisic.add(PersonajeMove, PJ_X + PJ_DX, PJ_Y + PJ_DY);
-            Fisic.add(Respaldo, PJ_X, PJ_Y);
             Respaldo = Respaldo2;
             PJ_X += PJ_DX;
             PJ_Y += PJ_DY;
+
         }
     }
 
@@ -92,7 +111,7 @@ public class ViewGameController implements Initializable {
             case "0":
                 return new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
             case "2":
-                return new ImageView(new Image("/proyecto2/Assets/BloqueCaja.png"));
+                return new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
             case "3":
                 return new ImageView(new Image("/proyecto2/Assets/BloqueDestino.png"));
             case "4":
