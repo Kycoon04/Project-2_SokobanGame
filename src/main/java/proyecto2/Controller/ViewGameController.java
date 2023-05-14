@@ -46,18 +46,20 @@ public class ViewGameController implements Initializable {
     }
 
     public void MovimientoPersonaje(KeyEvent event) {
+        ImageView PersonajeMove = new ImageView(new Image("/proyecto2/Assets/Personaje.png"));
         switch (event.getCode()) {
             case UP:
-                moverPersonaje(-1, 0);
+                moverPersonaje(-1, 0,PersonajeMove);
                 break;
             case DOWN:
-                moverPersonaje(1, 0);
+                moverPersonaje(1, 0,PersonajeMove);
                 break;
             case LEFT:
-                moverPersonaje(0, -1);
+                PersonajeMove.setImage(new Image("/proyecto2/Assets/PersonajeIzquierda.png"));
+                moverPersonaje(0, -1,PersonajeMove);
                 break;
             case RIGHT:
-                moverPersonaje(0, 1);
+                moverPersonaje(0, 1,PersonajeMove);
                 break;
             default:
                 break;
@@ -68,17 +70,14 @@ public class ViewGameController implements Initializable {
         return MatrizNumber[y + PJ_DY][x + PJ_DX].equals("1");
     }
 
-    private void moverPersonaje(int PJ_DY, int PJ_DX) {
-        ImageView PersonajeMove = new ImageView(new Image("/proyecto2/Assets/Personaje.png"));
+    private void moverPersonaje(int PJ_DY, int PJ_DX,ImageView PersonajeMove) {
         if (!verificarBorde(PJ_Y, PJ_X, PJ_DY, PJ_DX)) { //Verifica si el campo donde quiere ir es un "1" osea, un borde
             
             if (!verificarBorde(PJ_Y - PJ_DY, PJ_X - PJ_DX, PJ_DY, PJ_DX)) { //Verifica si el campo anterior es un borde para hacer la copia de seguridad de la imagen
-                Respaldo2 = SiguienteRespaldo(PJ_Y + PJ_DY, PJ_X + PJ_DX);   //Al ser ImageView, si yo camino, la imagen del bicho se repiterá en varias celdas
+                Respaldo2 = SiguienteRespaldo(PJ_Y + PJ_DY, PJ_X + PJ_DX);  //Al ser ImageView, si yo camino, la imagen del bicho se repiterá en varias celdas
             } else {
-
                 Respaldo2 = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
                 Respaldo = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
-                
             }
             Fisic.add(PersonajeMove, PJ_X + PJ_DX, PJ_Y + PJ_DY);
             Fisic.add(Respaldo, PJ_X, PJ_Y);
@@ -96,6 +95,8 @@ public class ViewGameController implements Initializable {
                 return new ImageView(new Image("/proyecto2/Assets/BloqueCaja.png"));
             case "3":
                 return new ImageView(new Image("/proyecto2/Assets/BloqueDestino.png"));
+            case "4":
+                return new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
         }
         return null;
     }
