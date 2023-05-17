@@ -47,165 +47,12 @@ public class ViewGameController implements Initializable {
         });
     }
 
-    public void MovimientoPersonaje(KeyEvent event) {
-        ImageView PersonajeMove = new ImageView(new Image("/proyecto2/Assets/Personaje.png"));
-        switch (event.getCode()) {
-            case UP:
-                moverPersonaje(-1, 0, PersonajeMove);
-                break;
-            case DOWN:
-                moverPersonaje(1, 0, PersonajeMove);
-                break;
-            case LEFT:
-                PersonajeMove.setImage(new Image("/proyecto2/Assets/PersonajeIzquierda.png"));
-                moverPersonaje(0, -1, PersonajeMove);
-                break;
-            case RIGHT:
-                moverPersonaje(0, 1, PersonajeMove);
-                break;
-            default:
-                break;
-        }
-    }
-
     private boolean verificarBorde(int fila, int columna, int desplazamientoFila, int desplazamientoColumna) {
         return MatrizNumber[fila + desplazamientoFila][columna + desplazamientoColumna].equals("1");
     }
 
     private boolean verificarCaja(int fila, int columna, int desplazamientoFila, int desplazamientoColumna) {
         return MatrizNumber[fila + desplazamientoFila][columna + desplazamientoColumna].equals("2");
-    }
-
-    public void moverPersonaje(int desplazamientoFila, int desplazamientoColumna, ImageView PersonajeMove) {
-
-        // Verifica si el campo donde quiere ir es un "1", osea, un borde
-        if (!verificarBorde(PJ_Fila, PJ_Columna, desplazamientoFila, desplazamientoColumna)) {
-            if (!verificarBorde(PJ_Fila - desplazamientoFila, PJ_Columna - desplazamientoColumna, desplazamientoFila, desplazamientoColumna)) {
-                // Verifica si el campo anterior es un borde para hacer la copia de seguridad de la imagen
-                // Al ser ImageView, si yo camino, la imagen del bicho se repetirá en varias celdas
-                Respaldo2 = SiguienteRespaldo(PJ_Fila + desplazamientoFila, PJ_Columna + desplazamientoColumna);
-            } else {
-                Respaldo2 = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
-                Respaldo = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
-            }
-            MoverCaja(desplazamientoFila, desplazamientoColumna, PersonajeMove);
-        }
-        PosibleVictoria();
-    }
-
-    public void MoverCaja(int desplazamientoFila, int desplazamientoColumna, ImageView PersonajeMove) {
-        boolean cajaLibre = true;
-        ImageView caja = new ImageView(new Image("/proyecto2/Assets/BloqueCaja.png"));
-        ImageView tierra = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
-        ImageView BloqueDestino = new ImageView(new Image("/proyecto2/Assets/BloqueDestino.png"));
-
-        int OperacionX = PJ_Fila + ((desplazamientoFila + desplazamientoFila) * Math.abs(desplazamientoFila));
-        int OperacionY = PJ_Columna + ((desplazamientoColumna + desplazamientoColumna) * Math.abs(desplazamientoColumna));
-
-        if (verificarCaja(PJ_Fila, PJ_Columna, desplazamientoFila, desplazamientoColumna)) {
-            if (!MatrizNumber[OperacionX][OperacionY].equals("1") &&!MatrizNumber[OperacionX][OperacionY].equals("2")) {
-                Fisic.add(caja, OperacionY, OperacionX);
-
-                if (MatrizRespaldo[PJ_Fila + desplazamientoFila][PJ_Columna + desplazamientoColumna].equals("3")) {
-                    MatrizNumber[PJ_Fila + desplazamientoFila][PJ_Columna + desplazamientoColumna] = "3";
-                    Fisic.add(BloqueDestino, PJ_Columna + desplazamientoColumna, PJ_Fila + desplazamientoFila);
-                } else {
-                    MatrizNumber[PJ_Fila + desplazamientoFila][PJ_Columna + desplazamientoColumna] = "0"; //problema aqui de perder el 3
-                    Fisic.add(tierra, PJ_Columna + desplazamientoColumna, PJ_Fila + desplazamientoFila);
-                }
-
-                MatrizNumber[OperacionX][OperacionY] = "2";
-
-                if (MatrizRespaldo[PJ_Fila][PJ_Columna].equals("3")) {
-                    Fisic.add(BloqueDestino, PJ_Columna, PJ_Fila);
-                } else {
-                    Fisic.add(Respaldo, PJ_Columna, PJ_Fila);
-                }
-                cajaLibre = true;
-            } else {
-                cajaLibre = false;
-            }
-
-            if (CajaEsquina(MatrizNumber, OperacionX, OperacionY)) {
-                System.out.println("bichoo");
-            }
-
-        } else {
-            if (MatrizRespaldo[PJ_Fila][PJ_Columna].equals("3")) {
-                Fisic.add(BloqueDestino, PJ_Columna, PJ_Fila);
-            } else {
-                Fisic.add(Respaldo, PJ_Columna, PJ_Fila);
-            }
-        }
-        if (cajaLibre) {
-            Fisic.add(PersonajeMove, PJ_Columna + desplazamientoColumna, PJ_Fila + desplazamientoFila);
-            Respaldo = Respaldo2;
-            PJ_Columna += desplazamientoColumna;
-            PJ_Fila += desplazamientoFila;
-        }
-    }
-
-    public boolean CajaEsquina(String[][] matrix, int x, int y) {
-        int count = 0;
-        boolean Paralelo = false;
-        // Verificar los 4 espacios adyacentes (sin contar las esquinas)
-        if (matrix[x - 1][y].equals("1")) {
-            count++;
-            Paralelo = true;
-        }
-        if (matrix[x + 1][y].equals("1") && !Paralelo) {
-            count++;
-        }
-        if (matrix[x][y - 1].equals("1")) {
-            count++;
-        }
-        if (matrix[x][y + 1].equals("1")) {
-            count++;
-        }
-
-        // Si se encontraron al menos dos elementos iguales a "1", retornar true
-        return count >= 2;
-    }
-
-    public boolean PosibleVictoria() {
-        for (int i = 0; i < MatrizNumber.length; i++) {
-            for (int j = 0; j < MatrizNumber.length; j++) {
-                if (MatrizNumber[i][j].equals("3")) {
-                    return false;
-                }
-            }
-        }
-        System.out.println("gano la partida");
-        return true;
-    }
-
-    public ImageView SiguienteRespaldo(int fila, int columna) {
-        switch (MatrizNumber[fila][columna]) {
-            case "0":
-                return new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
-            case "2":
-                return new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
-            case "3":
-                return new ImageView(new Image("/proyecto2/Assets/BloqueDestino.png"));
-            case "4":
-                return new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
-        }
-        return null;
-    }
-
-    public void CargarMatriz(String[] numeros) {
-        int index = 0;
-        for (int i = 0; i < MatrizNumber.length; i++) {
-            for (int j = 0; j < MatrizNumber.length; j++) {
-                MatrizNumber[i][j] = numeros[index];
-                index++;
-            }
-        }
-        for (int i = 0; i < MatrizNumber.length; i++) {
-            for (int j = 0; j < MatrizNumber.length; j++) {
-                MatrizRespaldo[i][j] = MatrizNumber[i][j];
-            }
-        }
     }
 
     public void CargarNivel() {
@@ -259,5 +106,157 @@ public class ViewGameController implements Initializable {
                 i++;
             }
         }
+    }
+
+    public void CargarMatriz(String[] numeros) {
+        int index = 0;
+        for (int i = 0; i < MatrizNumber.length; i++) {
+            for (int j = 0; j < MatrizNumber.length; j++) {
+                MatrizNumber[i][j] = numeros[index];
+                index++;
+            }
+        }
+        for (int i = 0; i < MatrizNumber.length; i++) {
+            for (int j = 0; j < MatrizNumber.length; j++) {
+                MatrizRespaldo[i][j] = MatrizNumber[i][j];
+            }
+        }
+    }
+
+    public void MovimientoPersonaje(KeyEvent event) {
+        ImageView PersonajeMove = new ImageView(new Image("/proyecto2/Assets/Personaje.png"));
+        switch (event.getCode()) {
+            case UP:
+                moverPersonaje(-1, 0, PersonajeMove);
+                break;
+            case DOWN:
+                moverPersonaje(1, 0, PersonajeMove);
+                break;
+            case LEFT:
+                PersonajeMove.setImage(new Image("/proyecto2/Assets/PersonajeIzquierda.png"));
+                moverPersonaje(0, -1, PersonajeMove);
+                break;
+            case RIGHT:
+                moverPersonaje(0, 1, PersonajeMove);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void moverPersonaje(int desplazamientoFila, int desplazamientoColumna, ImageView PersonajeMove) {
+
+        // Verifica si el campo donde quiere ir es un "1", osea, un borde
+        if (!verificarBorde(PJ_Fila, PJ_Columna, desplazamientoFila, desplazamientoColumna)) {
+            if (!verificarBorde(PJ_Fila - desplazamientoFila, PJ_Columna - desplazamientoColumna, desplazamientoFila, desplazamientoColumna)) {
+                // Verifica si el campo anterior es un borde para hacer la copia de seguridad de la imagen
+                // Al ser ImageView, si yo camino, la imagen del bicho se repetirá en varias celdas
+                Respaldo2 = SiguienteRespaldo(PJ_Fila + desplazamientoFila, PJ_Columna + desplazamientoColumna);
+            } else {
+                Respaldo2 = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
+                Respaldo = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
+            }
+            MoverCaja(desplazamientoFila, desplazamientoColumna, PersonajeMove);
+        }
+        PosibleVictoria();  //Analiza si los espacios meta y las cajas estan en la misma posicion, esto cada vez que se mueve una caja (Muy optimizado douglas lo confirmaría...)
+    }
+
+    public void MoverCaja(int desplazamientoFila, int desplazamientoColumna, ImageView PersonajeMove) {
+        boolean cajaLibre = true;
+        ImageView caja = new ImageView(new Image("/proyecto2/Assets/BloqueCaja.png"));
+        ImageView tierra = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
+        ImageView BloqueDestino = new ImageView(new Image("/proyecto2/Assets/BloqueDestino.png"));
+
+        int OperacionX = PJ_Fila + ((desplazamientoFila + desplazamientoFila) * Math.abs(desplazamientoFila));
+        int OperacionY = PJ_Columna + ((desplazamientoColumna + desplazamientoColumna) * Math.abs(desplazamientoColumna));
+
+        if (verificarCaja(PJ_Fila, PJ_Columna, desplazamientoFila, desplazamientoColumna)) {
+            if (!MatrizNumber[OperacionX][OperacionY].equals("1") && !MatrizNumber[OperacionX][OperacionY].equals("2")) {
+                Fisic.add(caja, OperacionY, OperacionX);
+
+                if (MatrizRespaldo[PJ_Fila + desplazamientoFila][PJ_Columna + desplazamientoColumna].equals("3")) {
+                    MatrizNumber[PJ_Fila + desplazamientoFila][PJ_Columna + desplazamientoColumna] = "3";
+                    Fisic.add(BloqueDestino, PJ_Columna + desplazamientoColumna, PJ_Fila + desplazamientoFila);
+                } else {
+                    MatrizNumber[PJ_Fila + desplazamientoFila][PJ_Columna + desplazamientoColumna] = "0"; //problema aqui de perder el 3
+                    Fisic.add(tierra, PJ_Columna + desplazamientoColumna, PJ_Fila + desplazamientoFila);
+                }
+
+                MatrizNumber[OperacionX][OperacionY] = "2";
+
+                if (MatrizRespaldo[PJ_Fila][PJ_Columna].equals("3")) {
+                    Fisic.add(BloqueDestino, PJ_Columna, PJ_Fila);
+                } else {
+                    Fisic.add(Respaldo, PJ_Columna, PJ_Fila);
+                }
+                cajaLibre = true;
+            } else {
+                cajaLibre = false;
+            }
+
+            if (CajaEsquina(MatrizNumber, OperacionX, OperacionY)) {
+                System.out.println("bichoo");
+            }
+
+        } else {
+            if (MatrizRespaldo[PJ_Fila][PJ_Columna].equals("3")) {
+                Fisic.add(BloqueDestino, PJ_Columna, PJ_Fila);
+            } else {
+                Fisic.add(Respaldo, PJ_Columna, PJ_Fila);
+            }
+        }
+        if (cajaLibre) {
+            Fisic.add(PersonajeMove, PJ_Columna + desplazamientoColumna, PJ_Fila + desplazamientoFila);
+            MatrizNumber[PJ_Fila + desplazamientoFila][PJ_Columna + desplazamientoColumna] = "4";
+            MatrizNumber[PJ_Fila][PJ_Columna] = "0";
+            Respaldo = Respaldo2;
+            PJ_Columna += desplazamientoColumna;
+            PJ_Fila += desplazamientoFila;
+        }
+    }
+
+    public boolean CajaEsquina(String[][] matrix, int x, int y) {
+        int count = 0;
+        boolean Paralelo = false;
+        // Verificar los 4 espacios alredor del bloque
+        if (matrix[x - 1][y].equals("1")) {
+            count++;
+            Paralelo = true;
+        }
+        if (matrix[x + 1][y].equals("1") && !Paralelo) {
+            count++;
+        }
+        if (matrix[x][y - 1].equals("1")) {
+            count++;
+        }
+        if (matrix[x][y + 1].equals("1")) {
+            count++;
+        }
+        return count >= 2;
+    }
+
+    public boolean PosibleVictoria() {
+        for (int i = 0; i < MatrizNumber.length; i++) {
+            for (int j = 0; j < MatrizNumber.length; j++) {
+                if (MatrizNumber[i][j].equals("3")) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public ImageView SiguienteRespaldo(int fila, int columna) {
+        switch (MatrizNumber[fila][columna]) {
+            case "0":
+                return new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
+            case "2":
+                return new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
+            case "3":
+                return new ImageView(new Image("/proyecto2/Assets/BloqueDestino.png"));
+            case "4":
+                return new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
+        }
+        return null;
     }
 }
