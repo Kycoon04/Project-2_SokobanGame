@@ -127,7 +127,7 @@ public class ViewGameController implements Initializable {
             }
 
             if (CajaEsquina(MatrizNumber, OperacionX, OperacionY)) {
-                System.out.println("bicho la cago");
+                System.out.println("bichoo");
             }
 
         } else {
