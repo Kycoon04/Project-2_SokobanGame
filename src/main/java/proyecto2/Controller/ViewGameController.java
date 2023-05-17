@@ -31,7 +31,6 @@ public class ViewGameController implements Initializable {
     private int PJ_Fila;
     private int numFila;
     private int numColumna;
-    private int BanderaGanar;
     @FXML
     private GridPane Fisic;
     @FXML
@@ -199,7 +198,7 @@ public class ViewGameController implements Initializable {
             }
 
             if (CajaEsquina(MatrizNumber, OperacionX, OperacionY)) {
-                System.out.println("bichoo");
+                System.out.println("bicho la cago");
             }
 
         } else {
@@ -219,13 +218,6 @@ public class ViewGameController implements Initializable {
             } else {
                 MatrizNumber[PJ_Fila][PJ_Columna] = "0";
             }
-            for (int i = 0; i < MatrizNumber.length; i++) {
-                for (int j = 0; j < MatrizNumber[i].length; j++) {
-                    System.out.print(MatrizNumber[i][j] + " ");
-                }
-                System.out.println();
-            }
-            System.out.println("                   ");
             Respaldo = Respaldo2;
             PJ_Columna += desplazamientoColumna;
             PJ_Fila += desplazamientoFila;
