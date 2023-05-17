@@ -77,12 +77,9 @@ public class ViewGameController implements Initializable {
     }
 
     public void moverPersonaje(int desplazamientoFila, int desplazamientoColumna, ImageView PersonajeMove) {
-        ImageView caja = new ImageView(new Image("/proyecto2/Assets/BloqueCaja.png"));
-        ImageView tierra = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
-        ImageView BloqueDestino = new ImageView(new Image("/proyecto2/Assets/BloqueDestino.png"));
-        boolean cajaLibre = true;
 
-        if (!verificarBorde(PJ_Fila, PJ_Columna, desplazamientoFila, desplazamientoColumna)) { // Verifica si el campo donde quiere ir es un "1", osea, un borde
+        // Verifica si el campo donde quiere ir es un "1", osea, un borde
+        if (!verificarBorde(PJ_Fila, PJ_Columna, desplazamientoFila, desplazamientoColumna)) {
             if (!verificarBorde(PJ_Fila - desplazamientoFila, PJ_Columna - desplazamientoColumna, desplazamientoFila, desplazamientoColumna)) {
                 // Verifica si el campo anterior es un borde para hacer la copia de seguridad de la imagen
                 // Al ser ImageView, si yo camino, la imagen del bicho se repetirá en varias celdas
@@ -91,45 +88,83 @@ public class ViewGameController implements Initializable {
                 Respaldo2 = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
                 Respaldo = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
             }
-            if (verificarCaja(PJ_Fila, PJ_Columna, desplazamientoFila, desplazamientoColumna)) {
-                if (!MatrizNumber[PJ_Fila + ((desplazamientoFila + desplazamientoFila) * Math.abs(desplazamientoFila))][PJ_Columna + ((desplazamientoColumna + desplazamientoColumna) * Math.abs(desplazamientoColumna))].equals("1")) {
-                    Fisic.add(caja, (PJ_Columna + ((desplazamientoColumna + desplazamientoColumna) * Math.abs(desplazamientoColumna))), (PJ_Fila + ((desplazamientoFila + desplazamientoFila) * Math.abs(desplazamientoFila))));
+            MoverCaja(desplazamientoFila, desplazamientoColumna, PersonajeMove);
+        }
+        PosibleVictoria();
+    }
 
-                    if (MatrizRespaldo[PJ_Fila + desplazamientoFila][PJ_Columna + desplazamientoColumna].equals("3")) {
-                        MatrizNumber[PJ_Fila + desplazamientoFila][PJ_Columna + desplazamientoColumna] = "3";
-                        Fisic.add(BloqueDestino, PJ_Columna + desplazamientoColumna, PJ_Fila + desplazamientoFila);
-                    } else {
-                        MatrizNumber[PJ_Fila + desplazamientoFila][PJ_Columna + desplazamientoColumna] = "0"; //problema aqui de perder el 3
-                        Fisic.add(tierra, PJ_Columna + desplazamientoColumna, PJ_Fila + desplazamientoFila);
-                    }
-                    MatrizNumber[PJ_Fila + ((desplazamientoFila + desplazamientoFila) * Math.abs(desplazamientoFila))][PJ_Columna + ((desplazamientoColumna + desplazamientoColumna) * Math.abs(desplazamientoColumna))] = "2";
+    public void MoverCaja(int desplazamientoFila, int desplazamientoColumna, ImageView PersonajeMove) {
+        boolean cajaLibre = true;
+        ImageView caja = new ImageView(new Image("/proyecto2/Assets/BloqueCaja.png"));
+        ImageView tierra = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
+        ImageView BloqueDestino = new ImageView(new Image("/proyecto2/Assets/BloqueDestino.png"));
 
-                    if (MatrizRespaldo[PJ_Fila][PJ_Columna].equals("3")) {
-                        Fisic.add(BloqueDestino, PJ_Columna, PJ_Fila);
-                    } else {
-                        Fisic.add(Respaldo, PJ_Columna, PJ_Fila);
-                    }
-                    cajaLibre = true;
+        int OperacionX = PJ_Fila + ((desplazamientoFila + desplazamientoFila) * Math.abs(desplazamientoFila));
+        int OperacionY = PJ_Columna + ((desplazamientoColumna + desplazamientoColumna) * Math.abs(desplazamientoColumna));
+
+        if (verificarCaja(PJ_Fila, PJ_Columna, desplazamientoFila, desplazamientoColumna)) {
+            if (!MatrizNumber[OperacionX][OperacionY].equals("1") &&!MatrizNumber[OperacionX][OperacionY].equals("2")) {
+                Fisic.add(caja, OperacionY, OperacionX);
+
+                if (MatrizRespaldo[PJ_Fila + desplazamientoFila][PJ_Columna + desplazamientoColumna].equals("3")) {
+                    MatrizNumber[PJ_Fila + desplazamientoFila][PJ_Columna + desplazamientoColumna] = "3";
+                    Fisic.add(BloqueDestino, PJ_Columna + desplazamientoColumna, PJ_Fila + desplazamientoFila);
                 } else {
-                    cajaLibre = false;
+                    MatrizNumber[PJ_Fila + desplazamientoFila][PJ_Columna + desplazamientoColumna] = "0"; //problema aqui de perder el 3
+                    Fisic.add(tierra, PJ_Columna + desplazamientoColumna, PJ_Fila + desplazamientoFila);
                 }
-            } else {
+
+                MatrizNumber[OperacionX][OperacionY] = "2";
+
                 if (MatrizRespaldo[PJ_Fila][PJ_Columna].equals("3")) {
                     Fisic.add(BloqueDestino, PJ_Columna, PJ_Fila);
                 } else {
                     Fisic.add(Respaldo, PJ_Columna, PJ_Fila);
                 }
+                cajaLibre = true;
+            } else {
+                cajaLibre = false;
             }
-            if (cajaLibre) {
-                Fisic.add(PersonajeMove, PJ_Columna + desplazamientoColumna, PJ_Fila + desplazamientoFila);
-                Respaldo = Respaldo2;
-                PJ_Columna += desplazamientoColumna;
-                PJ_Fila += desplazamientoFila;
+
+            if (CajaEsquina(MatrizNumber, OperacionX, OperacionY)) {
+                System.out.println("bicho la cago");
+            }
+
+        } else {
+            if (MatrizRespaldo[PJ_Fila][PJ_Columna].equals("3")) {
+                Fisic.add(BloqueDestino, PJ_Columna, PJ_Fila);
+            } else {
+                Fisic.add(Respaldo, PJ_Columna, PJ_Fila);
             }
         }
-        if (PosibleVictoria()) {
-            System.out.println("gano la partida");
+        if (cajaLibre) {
+            Fisic.add(PersonajeMove, PJ_Columna + desplazamientoColumna, PJ_Fila + desplazamientoFila);
+            Respaldo = Respaldo2;
+            PJ_Columna += desplazamientoColumna;
+            PJ_Fila += desplazamientoFila;
         }
+    }
+
+    public boolean CajaEsquina(String[][] matrix, int x, int y) {
+        int count = 0;
+        boolean Paralelo = false;
+        // Verificar los 4 espacios adyacentes (sin contar las esquinas)
+        if (matrix[x - 1][y].equals("1")) {
+            count++;
+            Paralelo = true;
+        }
+        if (matrix[x + 1][y].equals("1") && !Paralelo) {
+            count++;
+        }
+        if (matrix[x][y - 1].equals("1")) {
+            count++;
+        }
+        if (matrix[x][y + 1].equals("1")) {
+            count++;
+        }
+
+        // Si se encontraron al menos dos elementos iguales a "1", retornar true
+        return count >= 2;
     }
 
     public boolean PosibleVictoria() {
@@ -140,6 +175,7 @@ public class ViewGameController implements Initializable {
                 }
             }
         }
+        System.out.println("gano la partida");
         return true;
     }
 
@@ -177,7 +213,7 @@ public class ViewGameController implements Initializable {
         ImageView imageView;
         StringBuilder builder = new StringBuilder();
         try {
-            File file = new File("src/main/resources/proyecto2/Levels/2.txt");
+            File file = new File("src/main/resources/proyecto2/Levels/1.txt");
             InputStream in = new FileInputStream(file);
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
             String line;
