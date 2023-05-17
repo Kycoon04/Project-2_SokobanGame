@@ -26,6 +26,7 @@ public class ViewGameController implements Initializable {
     private String[][] MatrizNumber = new String[10][10];
     private String[][] MatrizRespaldo = new String[10][10];
     String[] numeros;
+    int NumCajasTotal=0;
     private int PJ_Columna;
     private int PJ_Fila;
     private int numFila;
@@ -112,6 +113,9 @@ public class ViewGameController implements Initializable {
         int index = 0;
         for (int i = 0; i < MatrizNumber.length; i++) {
             for (int j = 0; j < MatrizNumber.length; j++) {
+                if(numeros[index].equals("2")){
+                NumCajasTotal++;
+                }
                 MatrizNumber[i][j] = numeros[index];
                 index++;
             }
@@ -209,6 +213,19 @@ public class ViewGameController implements Initializable {
             Fisic.add(PersonajeMove, PJ_Columna + desplazamientoColumna, PJ_Fila + desplazamientoFila);
             MatrizNumber[PJ_Fila + desplazamientoFila][PJ_Columna + desplazamientoColumna] = "4";
             MatrizNumber[PJ_Fila][PJ_Columna] = "0";
+
+            if (MatrizRespaldo[PJ_Fila][PJ_Columna].equals("3")) {
+                MatrizNumber[PJ_Fila][PJ_Columna] = "3";
+            } else {
+                MatrizNumber[PJ_Fila][PJ_Columna] = "0";
+            }
+            for (int i = 0; i < MatrizNumber.length; i++) {
+                for (int j = 0; j < MatrizNumber[i].length; j++) {
+                    System.out.print(MatrizNumber[i][j] + " ");
+                }
+                System.out.println();
+            }
+            System.out.println("                   ");
             Respaldo = Respaldo2;
             PJ_Columna += desplazamientoColumna;
             PJ_Fila += desplazamientoFila;
@@ -236,14 +253,20 @@ public class ViewGameController implements Initializable {
     }
 
     public boolean PosibleVictoria() {
+        int NumCajasTotalAux=NumCajasTotal;
         for (int i = 0; i < MatrizNumber.length; i++) {
             for (int j = 0; j < MatrizNumber.length; j++) {
-                if (MatrizNumber[i][j].equals("3")) {
-                    return false;
+                if(MatrizNumber[i][j].equals("2") && MatrizRespaldo[i][j].equals("3")){
+                NumCajasTotalAux--;
+                }
+                if (NumCajasTotalAux==0) {
+                    System.out.println("si gano");
+                    return true;
+
                 }
             }
         }
-        return true;
+        return false;
     }
 
     public ImageView SiguienteRespaldo(int fila, int columna) {
