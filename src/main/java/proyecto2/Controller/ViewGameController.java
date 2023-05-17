@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
@@ -17,6 +18,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import proyecto2.util.FlowController;
 
 public class ViewGameController implements Initializable {
 
@@ -26,7 +30,7 @@ public class ViewGameController implements Initializable {
     private String[][] MatrizNumber = new String[10][10];
     private String[][] MatrizRespaldo = new String[10][10];
     String[] numeros;
-    int NumCajasTotal=0;
+    int NumCajasTotal = 0;
     private int PJ_Columna;
     private int PJ_Fila;
     private int numFila;
@@ -35,9 +39,11 @@ public class ViewGameController implements Initializable {
     private GridPane Fisic;
     @FXML
     private BorderPane root;
+    private Pane Finalizo;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        root.toFront();
         CargarNivel();
         Platform.runLater(() -> {
             Scene scene = root.getScene();
@@ -112,8 +118,8 @@ public class ViewGameController implements Initializable {
         int index = 0;
         for (int i = 0; i < MatrizNumber.length; i++) {
             for (int j = 0; j < MatrizNumber.length; j++) {
-                if(numeros[index].equals("2")){
-                NumCajasTotal++;
+                if (numeros[index].equals("2")) {
+                    NumCajasTotal++;
                 }
                 MatrizNumber[i][j] = numeros[index];
                 index++;
@@ -245,14 +251,13 @@ public class ViewGameController implements Initializable {
     }
 
     public boolean PosibleVictoria() {
-        int NumCajasTotalAux=NumCajasTotal;
+        int NumCajasTotalAux = NumCajasTotal;
         for (int i = 0; i < MatrizNumber.length; i++) {
             for (int j = 0; j < MatrizNumber.length; j++) {
-                if(MatrizNumber[i][j].equals("2") && MatrizRespaldo[i][j].equals("3")){
-                NumCajasTotalAux--;
+                if (MatrizNumber[i][j].equals("2") && MatrizRespaldo[i][j].equals("3")) {
+                    NumCajasTotalAux--;
                 }
-                if (NumCajasTotalAux==0) {
-                    System.out.println("si gano");
+                if (NumCajasTotalAux == 0) {
                     return true;
 
                 }
@@ -273,5 +278,9 @@ public class ViewGameController implements Initializable {
                 return new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
         }
         return null;
+    }
+
+    private void Salir(ActionEvent event) {
+    FlowController.getInstance().goMain("ViewGame");
     }
 }
