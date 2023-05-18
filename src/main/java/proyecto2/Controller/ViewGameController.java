@@ -67,7 +67,8 @@ public class ViewGameController implements Initializable {
         ImageView imageView;
         StringBuilder builder = new StringBuilder();
         try {
-            File file = new File("src/main/resources/proyecto2/Levels/"+flowController.getNivel()+".txt");
+            //File file = new File("src/main/resources/proyecto2/Levels/"+flowController.getNivel()+".txt");
+            File file = new File("src/main/resources/proyecto2/Levels/4.txt");
             InputStream in = new FileInputStream(file);
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
             String line;
