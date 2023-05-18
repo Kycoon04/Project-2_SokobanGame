@@ -22,7 +22,14 @@ public class FlowController {
     private static Stage mainStage;
     private static ResourceBundle idioma;
     private static HashMap<String, FXMLLoader> loaders = new HashMap<>();
-
+    static int Nivel=1;
+    static boolean Nivel1=true;
+    static boolean Nivel2=false;
+    static boolean Nivel3=false;
+    static boolean Nivel4=false;
+    static boolean Nivel5=false;
+    static boolean Nivel6=false;
+    
     private FlowController() {
     }
 
@@ -36,11 +43,67 @@ public class FlowController {
         }
     }
 
+    public static boolean isNivel1() {
+        return Nivel1;
+    }
+
+    public static void setNivel1(boolean Nivel1) {
+        FlowController.Nivel1 = Nivel1;
+    }
+
+    public static boolean isNivel2() {
+        return Nivel2;
+    }
+
+    public static void setNivel2(boolean Nivel2) {
+        FlowController.Nivel2 = Nivel2;
+    }
+
+    public static boolean isNivel3() {
+        return Nivel3;
+    }
+
+    public static void setNivel3(boolean Nivel3) {
+        FlowController.Nivel3 = Nivel3;
+    }
+
+    public static boolean isNivel4() {
+        return Nivel4;
+    }
+
+    public static void setNivel4(boolean Nivel4) {
+        FlowController.Nivel4 = Nivel4;
+    }
+
+    public static boolean isNivel5() {
+        return Nivel5;
+    }
+
+    public static void setNivel5(boolean Nivel5) {
+        FlowController.Nivel5 = Nivel5;
+    }
+
+    public static boolean isNivel6() {
+        return Nivel6;
+    }
+
+    public static void setNivel6(boolean Nivel6) {
+        FlowController.Nivel6 = Nivel6;
+    }
+
     public static FlowController getInstance() {
         if (INSTANCE == null) {
             createInstance();
         }
         return INSTANCE;
+    }
+
+    public int getNivel() {
+        return Nivel;
+    }
+
+    public static void setNivel(int nivel) {
+        FlowController.Nivel = nivel;
     }
 
     @Override
@@ -126,10 +189,6 @@ public class FlowController {
 
     public Controller getController(String viewName) {
         return getLoader(viewName).getController();
-    }
-
-    public static void setIdioma(ResourceBundle idioma) {
-        FlowController.idioma = idioma;
     }
 
     public void initialize() {

@@ -6,68 +6,178 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="680.0" maxWidth="1000.0" minHeight="680.0" minWidth="1000.0" prefHeight="680.0" prefWidth="1000.0" style="-fx-background-color: #49b8fa;" stylesheets="@BotonSelecionado.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto2.Controller.ViewMenuController">
-    <center>
-        <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0">
-            <children>
-                <ImageView fitHeight="680.0" fitWidth="1000.0" layoutY="117.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
+<StackPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto2.Controller.ViewMenuController">
+   <children>
+      <BorderPane fx:id="ViewMain" maxHeight="680.0" maxWidth="1000.0" minHeight="680.0" minWidth="1000.0" prefHeight="680.0" prefWidth="1000.0" style="-fx-background-color: #49b8fa;" stylesheets="@BotonSelecionado.css">
+          <center>
+              <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0">
+                  <children>
+                      <ImageView fitHeight="680.0" fitWidth="1000.0" layoutY="117.0" pickOnBounds="true" preserveRatio="true">
+                          <image>
+                              <Image url="@../Assets/background.png" />
+                          </image>
+                      </ImageView>
+                      <ImageView fitHeight="114.0" fitWidth="417.0" layoutX="292.0" layoutY="117.0" pickOnBounds="true" preserveRatio="true">
+                          <image>
+                              <Image url="@../Assets/Logo.png" />
+                          </image>
+                      </ImageView>
+                      <Button contentDisplay="CENTER" layoutX="362.0" layoutY="277.0" mnemonicParsing="false" onAction="#Met_Jugar" text="Jugar" textAlignment="CENTER">
+                          <graphic>
+                              <ImageView fitHeight="90.0" fitWidth="244.0" pickOnBounds="true" preserveRatio="true">
+                                  <image>
+                                      <Image url="@../Assets/buttonLong_beige.png" />
+                                  </image>
+                              </ImageView>
+                          </graphic>
+                          <font>
+                              <Font name="System Bold" size="24.0" />
+                          </font>
+                          <cursor>
+                              <Cursor fx:constant="HAND" />
+                          </cursor>
+                      </Button>
+                      <Button contentDisplay="CENTER" layoutX="362.0" layoutY="369.0" mnemonicParsing="false" onAction="#Met_Niveles" prefWidth="271.0" text="Niveles" textAlignment="CENTER">
+                          <font>
+                              <Font name="System Bold" size="24.0" />
+                          </font>
+                          <graphic>
+                              <ImageView fitHeight="90.0" fitWidth="244.0" pickOnBounds="true" preserveRatio="true">
+                                  <image>
+                                      <Image url="@../Assets/buttonLong_beige.png" />
+                                  </image>
+                              </ImageView>
+                          </graphic>
+                          <cursor>
+                              <Cursor fx:constant="HAND" />
+                          </cursor>
+                      </Button>
+                      <Button contentDisplay="CENTER" layoutX="362.0" layoutY="459.0" mnemonicParsing="false" onAction="#Met_Guardar" text="Guardar" textAlignment="CENTER">
+                          <font>
+                              <Font name="System Bold" size="24.0" />
+                          </font>
+                          <graphic>
+                              <ImageView fitHeight="90.0" fitWidth="244.0" pickOnBounds="true" preserveRatio="true">
+                                  <image>
+                                      <Image url="@../Assets/buttonLong_beige.png" />
+                                  </image>
+                              </ImageView>
+                          </graphic>
+                          <cursor>
+                              <Cursor fx:constant="HAND" />
+                          </cursor>
+                      </Button>
+                  </children>
+              </AnchorPane>
+          </center>
+      </BorderPane>
+      <BorderPane fx:id="ViewNiveles" maxHeight="680.0" maxWidth="1000.0" minHeight="680.0" minWidth="1000.0" prefHeight="680.0" prefWidth="1000.0" style="-fx-background-color: #49b8fa;" stylesheets="@BotonSelecionado.css">
+         <center>
+            <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0">
+               <children>
+                  <ImageView fitHeight="680.0" fitWidth="1000.0" layoutY="117.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
                         <Image url="@../Assets/background.png" />
-                    </image>
-                </ImageView>
-                <ImageView fitHeight="114.0" fitWidth="417.0" layoutX="292.0" layoutY="117.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="114.0" fitWidth="417.0" layoutX="292.0" layoutY="117.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
                         <Image url="@../Assets/Logo.png" />
-                    </image>
-                </ImageView>
-                <Button contentDisplay="CENTER" layoutX="362.0" layoutY="277.0" mnemonicParsing="false" onAction="#Met_Jugar" text="Jugar" textAlignment="CENTER">
-                    <graphic>
-                        <ImageView fitHeight="90.0" fitWidth="244.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../Assets/buttonLong_beige.png" />
-                            </image>
+                     </image>
+                  </ImageView>
+                  <Button fx:id="Nivel1" contentDisplay="CENTER" layoutX="75.0" layoutY="236.0" mnemonicParsing="false" onAction="#Selecionado" prefHeight="0.0" prefWidth="33.0" text="1">
+                     <font>
+                        <Font name="System Bold" size="48.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="87.0" fitWidth="72.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Assets/NivelDisponible.png" />
+                           </image>
                         </ImageView>
-                    </graphic>
-                    <font>
-                        <Font name="System Bold" size="24.0" />
-                    </font>
-                    <cursor>
-                        <Cursor fx:constant="HAND" />
-                    </cursor>
-                </Button>
-                <Button contentDisplay="CENTER" layoutX="362.0" layoutY="369.0" mnemonicParsing="false" onAction="#Met_Niveles" prefWidth="271.0" text="Niveles" textAlignment="CENTER">
-                    <font>
-                        <Font name="System Bold" size="24.0" />
-                    </font>
-                    <graphic>
-                        <ImageView fitHeight="90.0" fitWidth="244.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../Assets/buttonLong_beige.png" />
-                            </image>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="Nivel2" contentDisplay="CENTER" layoutX="226.0" layoutY="290.0" mnemonicParsing="false" onAction="#Selecionado" prefHeight="0.0" prefWidth="33.0" text="2">
+                     <font>
+                        <Font name="System Bold" size="48.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="87.0" fitWidth="72.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Assets/NivelDisponible.png" />
+                           </image>
                         </ImageView>
-                    </graphic>
-                    <cursor>
-                        <Cursor fx:constant="HAND" />
-                    </cursor>
-                </Button>
-                <Button contentDisplay="CENTER" layoutX="362.0" layoutY="459.0" mnemonicParsing="false" onAction="#Met_Guardar" text="Guardar" textAlignment="CENTER">
-                    <font>
-                        <Font name="System Bold" size="24.0" />
-                    </font>
-                    <graphic>
-                        <ImageView fitHeight="90.0" fitWidth="244.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../Assets/buttonLong_beige.png" />
-                            </image>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="Nivel3" contentDisplay="CENTER" layoutX="366.0" layoutY="236.0" mnemonicParsing="false" onAction="#Selecionado" prefHeight="0.0" prefWidth="33.0" text="3">
+                     <font>
+                        <Font name="System Bold" size="48.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="87.0" fitWidth="72.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Assets/NivelDisponible.png" />
+                           </image>
                         </ImageView>
-                    </graphic>
-                    <cursor>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="Nivel4" contentDisplay="CENTER" layoutX="506.0" layoutY="290.0" mnemonicParsing="false" onAction="#Selecionado" prefHeight="0.0" prefWidth="33.0" text="4">
+                     <font>
+                        <Font name="System Bold" size="48.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="87.0" fitWidth="72.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Assets/NivelDisponible.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="Nivel5" contentDisplay="CENTER" layoutX="646.0" layoutY="236.0" mnemonicParsing="false" onAction="#Selecionado" prefHeight="0.0" prefWidth="33.0" text="5">
+                     <font>
+                        <Font name="System Bold" size="48.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="87.0" fitWidth="72.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Assets/NivelDisponible.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="Nivel6" contentDisplay="CENTER" layoutX="786.0" layoutY="290.0" mnemonicParsing="false" onAction="#Selecionado" prefHeight="0.0" prefWidth="33.0" text="6">
+                     <font>
+                        <Font name="System Bold" size="48.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="87.0" fitWidth="72.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Assets/NivelDisponible.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button contentDisplay="CENTER" layoutX="366.0" layoutY="575.0" mnemonicParsing="false" onAction="#Volver" text="Volver" textAlignment="CENTER">
+                     <graphic>
+                        <ImageView fitHeight="90.0" fitWidth="244.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Assets/buttonLong_beige.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                     <cursor>
                         <Cursor fx:constant="HAND" />
-                    </cursor>
-                </Button>
-            </children>
-        </AnchorPane>
-    </center>
-</BorderPane>
+                     </cursor>
+                  </Button>
+               </children>
+            </AnchorPane>
+         </center>
+      </BorderPane>
+   </children>
+</StackPane>

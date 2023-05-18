@@ -3,6 +3,7 @@ package proyecto2.Controller;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -19,14 +20,13 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import proyecto2.util.FlowController;
 
 public class ViewGameController implements Initializable {
 
     ImageView Respaldo = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
     ImageView Respaldo2 = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
-
+    private FlowController flowController;
     private String[][] MatrizNumber = new String[10][10];
     private String[][] MatrizRespaldo = new String[10][10];
     String[] numeros;
@@ -39,7 +39,6 @@ public class ViewGameController implements Initializable {
     private GridPane Fisic;
     @FXML
     private BorderPane root;
-    private Pane Finalizo;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -50,6 +49,7 @@ public class ViewGameController implements Initializable {
             scene.setOnKeyPressed((KeyEvent event) -> {
                 MovimientoPersonaje(event);
             });
+            root.requestFocus();
         });
     }
 
@@ -62,11 +62,12 @@ public class ViewGameController implements Initializable {
     }
 
     public void CargarNivel() {
+        flowController = FlowController.getInstance();
         int i = 0;
         ImageView imageView;
         StringBuilder builder = new StringBuilder();
         try {
-            File file = new File("src/main/resources/proyecto2/Levels/1.txt");
+            File file = new File("src/main/resources/proyecto2/Levels/"+flowController.getNivel()+".txt");
             InputStream in = new FileInputStream(file);
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
             String line;
@@ -258,6 +259,8 @@ public class ViewGameController implements Initializable {
                     NumCajasTotalAux--;
                 }
                 if (NumCajasTotalAux == 0) {
+                    ActualizarNivelesDispo();
+                    guardarMatrizComoTexto(MatrizNumber,"MatrizFinal.txt");
                     return true;
 
                 }
@@ -266,6 +269,33 @@ public class ViewGameController implements Initializable {
         return false;
     }
 
+    public void ActualizarNivelesDispo(){
+    switch (flowController.getNivel()) {
+        case 1:
+            flowController.setNivel(2);
+            flowController.setNivel2(true);
+            break;
+        case 2:
+            flowController.setNivel(3);
+            flowController.setNivel3(true);
+            break;
+        case 3:
+            flowController.setNivel(4);
+            flowController.setNivel4(true);
+            break;
+        case 4:
+            flowController.setNivel(5);
+            flowController.setNivel5(true);
+            break;
+        case 5:
+            flowController.setNivel(6);
+            flowController.setNivel6(true);
+            break;
+        default:
+            break;
+    }
+    }
+    
     public ImageView SiguienteRespaldo(int fila, int columna) {
         switch (MatrizNumber[fila][columna]) {
             case "0":
@@ -279,8 +309,28 @@ public class ViewGameController implements Initializable {
         }
         return null;
     }
+    
+    public static void guardarMatrizComoTexto(String[][] matriz, String nombreArchivo) {
+        try {
+            FileWriter writer = new FileWriter(nombreArchivo);
 
-    private void Salir(ActionEvent event) {
-    FlowController.getInstance().goMain("ViewGame");
+            for (String[] fila : matriz) {
+                for (String elemento : fila) {
+                    writer.write(elemento + " ");
+                }
+                writer.write(System.lineSeparator());
+            }
+
+            writer.close();
+            System.out.println("La matriz se ha guardado en el archivo " + nombreArchivo + " correctamente.");
+        } catch (IOException e) {
+            System.out.println("Se produjo un error al guardar la matriz en el archivo.");
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void Volver(ActionEvent event) {
+        FlowController.getInstance().goMain("ViewMenu");
     }
 }
