@@ -19,7 +19,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import proyecto2.util.FlowController;
 
 public class ViewGameController implements Initializable {
@@ -67,7 +66,8 @@ public class ViewGameController implements Initializable {
         ImageView imageView;
         StringBuilder builder = new StringBuilder();
         try {
-            File file = new File("src/main/resources/proyecto2/Levels/"+flowController.getNivel()+".txt");
+            //File file = new File("src/main/resources/proyecto2/Levels/"+flowController.getNivel()+".txt");
+            File file = new File("src/main/resources/proyecto2/Levels/6.txt");
             InputStream in = new FileInputStream(file);
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
             String line;
@@ -186,7 +186,6 @@ public class ViewGameController implements Initializable {
 
                 if (MatrizRespaldo[PJ_Fila + desplazamientoFila][PJ_Columna + desplazamientoColumna].equals("3")) {
                     MatrizNumber[PJ_Fila + desplazamientoFila][PJ_Columna + desplazamientoColumna] = "3";
-                    Fisic.add(BloqueDestino, PJ_Columna + desplazamientoColumna, PJ_Fila + desplazamientoFila);
                 } else {
                     MatrizNumber[PJ_Fila + desplazamientoFila][PJ_Columna + desplazamientoColumna] = "0"; //problema aqui de perder el 3
                     Fisic.add(tierra, PJ_Columna + desplazamientoColumna, PJ_Fila + desplazamientoFila);
