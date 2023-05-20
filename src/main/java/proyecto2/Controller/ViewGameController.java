@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.Random;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -66,7 +67,7 @@ public class ViewGameController implements Initializable {
         ImageView imageView;
         StringBuilder builder = new StringBuilder();
         try {
-            File file = new File("src/main/resources/proyecto2/Levels/"+flowController.getNivel()+".txt");
+            File file = new File("src/main/resources/proyecto2/Levels/" + flowController.getNivel() + ".txt");
             InputStream in = new FileInputStream(file);
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
             String line;
@@ -108,6 +109,10 @@ public class ViewGameController implements Initializable {
                         PJ_Columna = columna;
                         PJ_Fila = Fila;
                         break;
+                    case "5":
+                        imageView = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
+                        Fisic.add(imageView, columna, Fila);
+                        break;
                 }
                 i++;
             }
@@ -118,9 +123,6 @@ public class ViewGameController implements Initializable {
         int index = 0;
         for (int i = 0; i < MatrizNumber.length; i++) {
             for (int j = 0; j < MatrizNumber.length; j++) {
-                if (numeros[index].equals("2")) {
-                    NumCajasTotal++;
-                }
                 MatrizNumber[i][j] = numeros[index];
                 index++;
             }
@@ -130,6 +132,41 @@ public class ViewGameController implements Initializable {
                 MatrizRespaldo[i][j] = MatrizNumber[i][j];
             }
         }
+        cargarDosAleatorios();
+    }
+
+    public void cargarDosAleatorios() {
+        int cantidadTres = contarApariciones();
+        Random random = new Random();
+
+        for (int i = 0; i < cantidadTres; i++) {
+            boolean cargado = false;
+
+            while (!cargado) {
+                int fila = random.nextInt(MatrizNumber.length);
+                int columna = random.nextInt(MatrizNumber[0].length);
+
+                if (MatrizNumber[fila][columna].equals("0")) {
+                    MatrizNumber[fila][columna] = "2";
+                    MatrizRespaldo[fila][columna] = "2";
+                    NumCajasTotal++;
+                    cargado = true;
+                }
+            }
+        }
+    }
+
+    private int contarApariciones() {
+        int contador = 0;
+        for (int i = 0; i < MatrizNumber.length; i++) {
+            for (int j = 0; j < MatrizNumber[0].length; j++) {
+                if (MatrizNumber[i][j].equals("3")) {
+                    contador++;
+                }
+            }
+        }
+
+        return contador;
     }
 
     public void MovimientoPersonaje(KeyEvent event) {
@@ -258,7 +295,7 @@ public class ViewGameController implements Initializable {
                 }
                 if (NumCajasTotalAux == 0) {
                     ActualizarNivelesDispo();
-                    guardarMatrizComoTexto(MatrizNumber,"MatrizFinal.txt");
+                    guardarMatrizComoTexto(MatrizNumber, "MatrizFinal.txt");
                     return true;
 
                 }
@@ -267,33 +304,33 @@ public class ViewGameController implements Initializable {
         return false;
     }
 
-    public void ActualizarNivelesDispo(){
-    switch (flowController.getNivel()) {
-        case 1:
-            flowController.setNivel(2);
-            flowController.setNivel2(true);
-            break;
-        case 2:
-            flowController.setNivel(3);
-            flowController.setNivel3(true);
-            break;
-        case 3:
-            flowController.setNivel(4);
-            flowController.setNivel4(true);
-            break;
-        case 4:
-            flowController.setNivel(5);
-            flowController.setNivel5(true);
-            break;
-        case 5:
-            flowController.setNivel(6);
-            flowController.setNivel6(true);
-            break;
-        default:
-            break;
+    public void ActualizarNivelesDispo() {
+        switch (flowController.getNivel()) {
+            case 1:
+                flowController.setNivel(2);
+                flowController.setNivel2(true);
+                break;
+            case 2:
+                flowController.setNivel(3);
+                flowController.setNivel3(true);
+                break;
+            case 3:
+                flowController.setNivel(4);
+                flowController.setNivel4(true);
+                break;
+            case 4:
+                flowController.setNivel(5);
+                flowController.setNivel5(true);
+                break;
+            case 5:
+                flowController.setNivel(6);
+                flowController.setNivel6(true);
+                break;
+            default:
+                break;
+        }
     }
-    }
-    
+
     public ImageView SiguienteRespaldo(int fila, int columna) {
         switch (MatrizNumber[fila][columna]) {
             case "0":
@@ -304,10 +341,12 @@ public class ViewGameController implements Initializable {
                 return new ImageView(new Image("/proyecto2/Assets/BloqueDestino.png"));
             case "4":
                 return new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
+            case "5":
+                return new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
         }
         return null;
     }
-    
+
     public static void guardarMatrizComoTexto(String[][] matriz, String nombreArchivo) {
         try {
             FileWriter writer = new FileWriter(nombreArchivo);
