@@ -29,7 +29,8 @@ public class FlowController {
     static boolean Nivel4=false;
     static boolean Nivel5=false;
     static boolean Nivel6=false;
-    
+    static boolean Perdio=false;
+    static boolean Gano=false;
     private FlowController() {
     }
 
@@ -41,6 +42,22 @@ public class FlowController {
                 }
             }
         }
+    }
+
+    public static boolean isPerdio() {
+        return Perdio;
+    }
+
+    public static void setPerdio(boolean Perdio) {
+        FlowController.Perdio = Perdio;
+    }
+
+    public static boolean isGano() {
+        return Gano;
+    }
+
+    public static void setGano(boolean Gano) {
+        FlowController.Gano = Gano;
     }
 
     public static boolean isNivel1() {

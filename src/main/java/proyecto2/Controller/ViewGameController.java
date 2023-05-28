@@ -124,12 +124,8 @@ public class ViewGameController implements Initializable {
         for (int i = 0; i < MatrizNumber.length; i++) {
             for (int j = 0; j < MatrizNumber.length; j++) {
                 MatrizNumber[i][j] = numeros[index];
-                index++;
-            }
-        }
-        for (int i = 0; i < MatrizNumber.length; i++) {
-            for (int j = 0; j < MatrizNumber.length; j++) {
                 MatrizRespaldo[i][j] = MatrizNumber[i][j];
+                index++;
             }
         }
         cargarDosAleatorios();
@@ -204,7 +200,7 @@ public class ViewGameController implements Initializable {
             }
             MoverCaja(desplazamientoFila, desplazamientoColumna, PersonajeMove);
         }
-        PosibleVictoria();  //Analiza si los espacios meta y las cajas estan en la misma posicion, esto cada vez que se mueve una caja (Muy optimizado douglas lo confirmaría...)
+        PosibleVictoria();  //Analiza si los espacios meta y las cajas estan en la misma posicion, esto cada vez que se mueve una caja (Muy optimizado Douglas lo confirmaría...)
     }
 
     public void MoverCaja(int desplazamientoFila, int desplazamientoColumna, ImageView PersonajeMove) {
@@ -238,11 +234,10 @@ public class ViewGameController implements Initializable {
             } else {
                 cajaLibre = false;
             }
-
             if (CajaEsquina(MatrizNumber, OperacionX, OperacionY)) {
-                System.out.println("bicho la cago");
+                flowController.setPerdio(true);
+                FlowController.getInstance().goMain("ViewMenu");
             }
-
         } else {
             if (MatrizRespaldo[PJ_Fila][PJ_Columna].equals("3")) {
                 Fisic.add(BloqueDestino, PJ_Columna, PJ_Fila);
@@ -266,24 +261,25 @@ public class ViewGameController implements Initializable {
         }
     }
 
-    public boolean CajaEsquina(String[][] matrix, int x, int y) {
+    public boolean CajaEsquina(String[][] matriz, int fila, int columna) {
         int count = 0;
-        boolean Paralelo = false;
-        // Verificar los 4 espacios alredor del bloque
-        if (matrix[x - 1][y].equals("1")) {
-            count++;
-            Paralelo = true;
-        }
-        if (matrix[x + 1][y].equals("1") && !Paralelo) {
+        if (fila > 0 && matriz[fila - 1][columna].equals("1")) {
             count++;
         }
-        if (matrix[x][y - 1].equals("1")) {
+        if (fila < matriz.length - 1 && matriz[fila + 1][columna].equals("1")) {
             count++;
         }
-        if (matrix[x][y + 1].equals("1")) {
+        if (columna > 0 && matriz[fila][columna - 1].equals("1")) {
             count++;
         }
-        return count >= 2;
+        if (columna < matriz[0].length - 1 && matriz[fila][columna + 1].equals("1")) {
+            count++;
+        }
+        if (count >= 2 && !(matriz[fila - 1][columna].equals("1") && matriz[fila + 1][columna].equals("1"))
+                && !(matriz[fila][columna - 1].equals("1") && matriz[fila][columna + 1].equals("1"))) {
+            return true;
+        }
+        return false;
     }
 
     public boolean PosibleVictoria() {
@@ -295,9 +291,9 @@ public class ViewGameController implements Initializable {
                 }
                 if (NumCajasTotalAux == 0) {
                     ActualizarNivelesDispo();
-                    guardarMatrizComoTexto(MatrizNumber, "MatrizFinal.txt");
+                    flowController.setGano(true);
+                    FlowController.getInstance().goMain("ViewMenu");
                     return true;
-
                 }
             }
         }
