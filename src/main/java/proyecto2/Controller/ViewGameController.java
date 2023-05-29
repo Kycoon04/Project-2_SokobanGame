@@ -17,6 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -29,6 +30,7 @@ public class ViewGameController implements Initializable {
     private FlowController flowController;
     private String[][] MatrizNumber = new String[10][10];
     private String[][] MatrizRespaldo = new String[10][10];
+    private String[][] MatrizDevolver = new String[10][10];
     String[] numeros;
     int NumCajasTotal = 0;
     private int PJ_Columna;
@@ -84,9 +86,15 @@ public class ViewGameController implements Initializable {
 
         numFila = Fisic.getRowCount();
         numColumna = Fisic.getColumnCount();
+        Pintar(MatrizNumber);
+    }
+
+    public void Pintar(String[][] matriz) {
+        int i = 0;
+        ImageView imageView;
         for (int Fila = 0; Fila < numFila; Fila++) {
             for (int columna = 0; columna < numColumna; columna++) {
-                switch (MatrizNumber[Fila][columna]) {
+                switch (matriz[Fila][columna]) {
                     case "0":
                         imageView = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
                         Fisic.add(imageView, columna, Fila);
@@ -167,18 +175,47 @@ public class ViewGameController implements Initializable {
 
     public void MovimientoPersonaje(KeyEvent event) {
         ImageView PersonajeMove = new ImageView(new Image("/proyecto2/Assets/Personaje.png"));
+        if (event.isControlDown() && event.getCode() == KeyCode.Z) {
+            Pintar(MatrizDevolver);
+                for (int i = 0; i < MatrizNumber.length; i++) {
+                    for (int j = 0; j < MatrizNumber.length; j++) {
+                       MatrizNumber[i][j] =  MatrizDevolver[i][j];
+                    }
+                }
+            return;
+        }
         switch (event.getCode()) {
             case UP:
+                for (int i = 0; i < MatrizNumber.length; i++) {
+                    for (int j = 0; j < MatrizNumber.length; j++) {
+                        MatrizDevolver[i][j] = MatrizNumber[i][j];
+                    }
+                }
                 moverPersonaje(-1, 0, PersonajeMove);
                 break;
             case DOWN:
+                for (int i = 0; i < MatrizNumber.length; i++) {
+                    for (int j = 0; j < MatrizNumber.length; j++) {
+                        MatrizDevolver[i][j] = MatrizNumber[i][j];
+                    }
+                }
                 moverPersonaje(1, 0, PersonajeMove);
                 break;
             case LEFT:
+                for (int i = 0; i < MatrizNumber.length; i++) {
+                    for (int j = 0; j < MatrizNumber.length; j++) {
+                        MatrizDevolver[i][j] = MatrizNumber[i][j];
+                    }
+                }
                 PersonajeMove.setImage(new Image("/proyecto2/Assets/PersonajeIzquierda.png"));
                 moverPersonaje(0, -1, PersonajeMove);
                 break;
             case RIGHT:
+                for (int i = 0; i < MatrizNumber.length; i++) {
+                    for (int j = 0; j < MatrizNumber.length; j++) {
+                        MatrizDevolver[i][j] = MatrizNumber[i][j];
+                    }
+                }
                 moverPersonaje(0, 1, PersonajeMove);
                 break;
             default:
@@ -261,25 +298,24 @@ public class ViewGameController implements Initializable {
         }
     }
 
-    public boolean CajaEsquina(String[][] matriz, int fila, int columna) {
+    public boolean CajaEsquina(String[][] matrix, int x, int y) {
         int count = 0;
-        if (fila > 0 && matriz[fila - 1][columna].equals("1")) {
+        boolean Paralelo = false;
+        // Verificar los 4 espacios alredor del bloque
+        if (matrix[x - 1][y].equals("1")) {
+            count++;
+            Paralelo = true;
+        }
+        if (matrix[x + 1][y].equals("1") && !Paralelo) {
             count++;
         }
-        if (fila < matriz.length - 1 && matriz[fila + 1][columna].equals("1")) {
+        if (matrix[x][y - 1].equals("1")) {
             count++;
         }
-        if (columna > 0 && matriz[fila][columna - 1].equals("1")) {
+        if (matrix[x][y + 1].equals("1") && !Paralelo) {
             count++;
         }
-        if (columna < matriz[0].length - 1 && matriz[fila][columna + 1].equals("1")) {
-            count++;
-        }
-        if (count >= 2 && !(matriz[fila - 1][columna].equals("1") && matriz[fila + 1][columna].equals("1"))
-                && !(matriz[fila][columna - 1].equals("1") && matriz[fila][columna + 1].equals("1"))) {
-            return true;
-        }
-        return false;
+        return count >= 2;
     }
 
     public boolean PosibleVictoria() {
