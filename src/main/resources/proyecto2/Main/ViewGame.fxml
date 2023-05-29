@@ -168,6 +168,21 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
+            <Button contentDisplay="CENTER" layoutX="24.0" layoutY="500.0" mnemonicParsing="false" onAction="#Resetear" text="Resetear" textAlignment="CENTER">
+               <graphic>
+                  <ImageView fitHeight="90.0" fitWidth="244.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Assets/buttonLong_beige.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
          </children>
       </AnchorPane>
    </left>

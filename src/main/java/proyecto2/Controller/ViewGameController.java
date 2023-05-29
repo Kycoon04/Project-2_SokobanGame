@@ -48,10 +48,9 @@ public class ViewGameController implements Initializable {
         CargarNivel();
         Platform.runLater(() -> {
             Scene scene = root.getScene();
-            scene.setOnKeyPressed((KeyEvent event) -> {
+            scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
                 MovimientoPersonaje(event);
             });
-            root.requestFocus();
         });
     }
 
@@ -177,11 +176,11 @@ public class ViewGameController implements Initializable {
         ImageView PersonajeMove = new ImageView(new Image("/proyecto2/Assets/Personaje.png"));
         if (event.isControlDown() && event.getCode() == KeyCode.Z) {
             Pintar(MatrizDevolver);
-                for (int i = 0; i < MatrizNumber.length; i++) {
-                    for (int j = 0; j < MatrizNumber.length; j++) {
-                       MatrizNumber[i][j] =  MatrizDevolver[i][j];
-                    }
+            for (int i = 0; i < MatrizNumber.length; i++) {
+                for (int j = 0; j < MatrizNumber.length; j++) {
+                    MatrizNumber[i][j] = MatrizDevolver[i][j];
                 }
+            }
             return;
         }
         switch (event.getCode()) {
@@ -401,5 +400,12 @@ public class ViewGameController implements Initializable {
     @FXML
     private void Volver(ActionEvent event) {
         FlowController.getInstance().goMain("ViewMenu");
+    }
+
+    @FXML
+    private void Resetear(ActionEvent event) {
+     NumCajasTotal= 0;
+     CargarMatriz(numeros);
+     Pintar(MatrizNumber);
     }
 }
