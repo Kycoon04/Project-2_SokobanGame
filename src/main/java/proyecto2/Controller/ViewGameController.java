@@ -14,11 +14,13 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import proyecto2.util.FlowController;
@@ -96,29 +98,47 @@ public class ViewGameController implements Initializable {
                 switch (matriz[Fila][columna]) {
                     case "0":
                         imageView = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
+                        Fisic.setColumnIndex(imageView, columna);
+                        Fisic.setRowIndex(imageView, Fila);
                         Fisic.add(imageView, columna, Fila);
+                        imageView.setOnMouseClicked(event -> ObtenerPosicion(event));
                         break;
                     case "1":
                         imageView = new ImageView(new Image("/proyecto2/Assets/BloqueBloqueo.png"));
+                        Fisic.setColumnIndex(imageView, columna);
+                        Fisic.setRowIndex(imageView, Fila);
                         Fisic.add(imageView, columna, Fila);
+                        imageView.setOnMouseClicked(event -> ObtenerPosicion(event));
                         break;
                     case "2":
                         imageView = new ImageView(new Image("/proyecto2/Assets/BloqueCaja.png"));
+                        Fisic.setColumnIndex(imageView, columna);
+                        Fisic.setRowIndex(imageView, Fila);
                         Fisic.add(imageView, columna, Fila);
+                        imageView.setOnMouseClicked(event -> ObtenerPosicion(event));
                         break;
                     case "3":
                         imageView = new ImageView(new Image("/proyecto2/Assets/BloqueDestino.png"));
+                        Fisic.setColumnIndex(imageView, columna);
+                        Fisic.setRowIndex(imageView, Fila);
                         Fisic.add(imageView, columna, Fila);
+                        imageView.setOnMouseClicked(event -> ObtenerPosicion(event));
                         break;
                     case "4":
                         imageView = new ImageView(new Image("/proyecto2/Assets/Personaje2.png"));
+                        Fisic.setColumnIndex(imageView, columna);
+                        Fisic.setRowIndex(imageView, Fila);
                         Fisic.add(imageView, columna, Fila);
+                        imageView.setOnMouseClicked(event -> ObtenerPosicion(event));
                         PJ_Columna = columna;
                         PJ_Fila = Fila;
                         break;
                     case "5":
                         imageView = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
+                        Fisic.setColumnIndex(imageView, columna);
+                        Fisic.setRowIndex(imageView, Fila);
                         Fisic.add(imageView, columna, Fila);
+                        imageView.setOnMouseClicked(event -> ObtenerPosicion(event));
                         break;
                 }
                 i++;
@@ -404,8 +424,16 @@ public class ViewGameController implements Initializable {
 
     @FXML
     private void Resetear(ActionEvent event) {
-     NumCajasTotal= 0;
-     CargarMatriz(numeros);
-     Pintar(MatrizNumber);
+        NumCajasTotal = 0;
+        CargarMatriz(numeros);
+        Pintar(MatrizNumber);
+    }
+
+    @FXML
+    private void ObtenerPosicion(MouseEvent event) {
+        Node clickedNode = (Node) event.getSource();
+        Integer columnIndex = Fisic.getColumnIndex(clickedNode);
+        Integer rowIndex = Fisic.getRowIndex(clickedNode);
+        System.out.println("Posición de la celda: x=" + columnIndex + ", y=" + rowIndex);
     }
 }
