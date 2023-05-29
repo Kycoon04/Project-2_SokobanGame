@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Random;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
@@ -24,6 +26,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import proyecto2.util.FlowController;
+import proyecto2.util.Posicion;
 
 public class ViewGameController implements Initializable {
 
@@ -55,7 +58,6 @@ public class ViewGameController implements Initializable {
             });
         });
     }
-
     private boolean verificarBorde(int fila, int columna, int desplazamientoFila, int desplazamientoColumna) {
         return MatrizNumber[fila + desplazamientoFila][columna + desplazamientoColumna].equals("1");
     }
@@ -424,6 +426,7 @@ public class ViewGameController implements Initializable {
 
     @FXML
     private void Resetear(ActionEvent event) {
+        
         NumCajasTotal = 0;
         CargarMatriz(numeros);
         Pintar(MatrizNumber);
@@ -435,5 +438,8 @@ public class ViewGameController implements Initializable {
         Integer columnIndex = Fisic.getColumnIndex(clickedNode);
         Integer rowIndex = Fisic.getRowIndex(clickedNode);
         System.out.println("Posición de la celda: x=" + columnIndex + ", y=" + rowIndex);
+       Posicion inicio = new Posicion(0,0);
+       Posicion objetivo = new Posicion(rowIndex,columnIndex);
+        //System.out.println(obtenerRutaMasCorta(MatrizNumber, inicio,objetivo));
     }
 }
