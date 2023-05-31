@@ -8,7 +8,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 import java.util.ResourceBundle;
@@ -25,6 +27,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 import proyecto2.util.FlowController;
 import proyecto2.util.Posicion;
 
@@ -46,6 +49,8 @@ public class ViewGameController implements Initializable {
     private GridPane Fisic;
     @FXML
     private BorderPane root;
+    @FXML
+    private Text NivelActual;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -58,6 +63,7 @@ public class ViewGameController implements Initializable {
             });
         });
     }
+
     private boolean verificarBorde(int fila, int columna, int desplazamientoFila, int desplazamientoColumna) {
         return MatrizNumber[fila + desplazamientoFila][columna + desplazamientoColumna].equals("1");
     }
@@ -67,6 +73,7 @@ public class ViewGameController implements Initializable {
     }
 
     public void CargarNivel() {
+        //NivelActual.setText(Integer.toString(flowController.getNivel()));
         flowController = FlowController.getInstance();
         int i = 0;
         ImageView imageView;
@@ -426,10 +433,84 @@ public class ViewGameController implements Initializable {
 
     @FXML
     private void Resetear(ActionEvent event) {
-        
+
         NumCajasTotal = 0;
         CargarMatriz(numeros);
         Pintar(MatrizNumber);
+    }
+
+    public List<Posicion> obtenerRutaMasCorta(String[][] matriz, Posicion inicio, Posicion objetivo) {
+        int filas = matriz.length;
+        int columnas = matriz[0].length;
+        String ObstaculoBorde = "1";
+        String ObstaculoCaja = "2";
+        int[] FilasAlrededor = {-1, 0, 1, 0};
+        int[] ColumbasAlrededor = {0, 1, 0, -1};
+        boolean[][] PaseoMiedo = new boolean[filas][columnas];
+        Posicion[][] padre = new Posicion[filas][columnas];
+        Queue<Posicion> cola = new LinkedList<>();
+        cola.offer(inicio);
+
+        while (!cola.isEmpty()) {
+            Posicion actual = cola.poll();
+            if (actual.fila == objetivo.fila && actual.columna == objetivo.columna) {
+                return construirRuta(padre, inicio, objetivo);
+            }
+            for (int j = 0; j < 4; j++) {
+                int nuevaFila = actual.fila + FilasAlrededor[j];
+                int nuevaColumna = actual.columna + ColumbasAlrededor[j];
+
+                if (esPosicionValida(nuevaFila, nuevaColumna, filas, columnas) && !PaseoMiedo[nuevaFila][nuevaColumna] && !matriz[nuevaFila][nuevaColumna].equals(ObstaculoBorde) && !matriz[nuevaFila][nuevaColumna].equals(ObstaculoCaja)) {
+                    cola.offer(new Posicion(nuevaFila, nuevaColumna));
+                    PaseoMiedo[nuevaFila][nuevaColumna] = true;
+                    padre[nuevaFila][nuevaColumna] = actual;
+                }
+            }
+        }
+        return new ArrayList<>();
+    }
+
+    private boolean esPosicionValida(int fila, int columna, int filas, int columnas) {
+        return fila >= 0 && fila < filas && columna >= 0 && columna < columnas;
+    }
+
+    private List<Posicion> construirRuta(Posicion[][] PosicionRealizada, Posicion inicio, Posicion objetivo) {
+        ImageView PersonajeMove = new ImageView(new Image("/proyecto2/Assets/Personaje.png"));
+        ImageView caja = new ImageView(new Image("/proyecto2/Assets/BloqueCaja.png"));
+        ImageView tierra = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
+        ImageView BloqueDestino = new ImageView(new Image("/proyecto2/Assets/BloqueDestino.png"));
+        List<Posicion> ruta = new ArrayList<>();
+        Posicion actual = objetivo;
+        while (actual != null) {
+            Runnable mx = new Runnable() {
+                @Override
+                public void run() {
+                    Fisic.add(PersonajeMove, actual.columna, actual.fila);
+                    MatrizNumber[PJ_Fila][PJ_Columna] = "0";
+                    MatrizNumber[actual.fila][actual.columna] = "4";
+                    if (MatrizRespaldo[PJ_Fila][PJ_Columna].equals("3")) {
+                        Fisic.add(BloqueDestino, PJ_Columna, PJ_Fila);
+                    } else {
+                        Fisic.add(Respaldo, PJ_Columna, PJ_Fila);
+                    }
+                    PJ_Columna = actual.columna;
+                    PJ_Fila = actual.fila;
+                }
+            };
+            setTimeout(mx, 1000);
+        }
+        return ruta;
+    }
+
+    public void setTimeout(Runnable runnable, int delay) {
+        new Thread(() -> {
+            try {
+                Thread.sleep(delay);
+                runnable.run();
+            } catch (Exception e) {
+                System.err.println(e);
+            }
+        }).start();
     }
 
     @FXML
@@ -438,8 +519,10 @@ public class ViewGameController implements Initializable {
         Integer columnIndex = Fisic.getColumnIndex(clickedNode);
         Integer rowIndex = Fisic.getRowIndex(clickedNode);
         System.out.println("Posición de la celda: x=" + columnIndex + ", y=" + rowIndex);
-       Posicion inicio = new Posicion(0,0);
-       Posicion objetivo = new Posicion(rowIndex,columnIndex);
-        //System.out.println(obtenerRutaMasCorta(MatrizNumber, inicio,objetivo));
+        Posicion inicio = new Posicion(PJ_Fila, PJ_Columna);
+        Posicion objetivo = new Posicion(rowIndex, columnIndex);
+        for (int i = 0; i < obtenerRutaMasCorta(MatrizNumber, inicio, objetivo).size(); i++) {
+            System.out.println(obtenerRutaMasCorta(MatrizNumber, inicio, objetivo).get(i).columna + " " + obtenerRutaMasCorta(MatrizNumber, inicio, objetivo).get(i).fila);
+        }
     }
 }
