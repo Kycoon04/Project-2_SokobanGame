@@ -475,31 +475,41 @@ public class ViewGameController implements Initializable {
     }
 
     private List<Posicion> construirRuta(Posicion[][] PosicionRealizada, Posicion inicio, Posicion objetivo) {
-        ImageView PersonajeMove = new ImageView(new Image("/proyecto2/Assets/Personaje.png"));
-        ImageView caja = new ImageView(new Image("/proyecto2/Assets/BloqueCaja.png"));
-        ImageView tierra = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
-        ImageView BloqueDestino = new ImageView(new Image("/proyecto2/Assets/BloqueDestino.png"));
         List<Posicion> ruta = new ArrayList<>();
         Posicion actual = objetivo;
         while (actual != null) {
-            Runnable mx = new Runnable() {
-                @Override
-                public void run() {
-                    Fisic.add(PersonajeMove, actual.columna, actual.fila);
-                    MatrizNumber[PJ_Fila][PJ_Columna] = "0";
-                    MatrizNumber[actual.fila][actual.columna] = "4";
-                    if (MatrizRespaldo[PJ_Fila][PJ_Columna].equals("3")) {
-                        Fisic.add(BloqueDestino, PJ_Columna, PJ_Fila);
-                    } else {
-                        Fisic.add(Respaldo, PJ_Columna, PJ_Fila);
-                    }
-                    PJ_Columna = actual.columna;
-                    PJ_Fila = actual.fila;
-                }
-            };
-            setTimeout(mx, 1000);
+            ruta.add(0, actual);
+            if (actual.equals(inicio)) {
+                break;
+            }
+            actual = PosicionRealizada[actual.fila][actual.columna];
         }
         return ruta;
+    }
+
+    private void MoverRuta(List<Posicion> ruta) {
+
+        System.out.println(ruta.size());
+        for (int i = 1; i < ruta.size(); i++) {
+            if (MatrizRespaldo[PJ_Fila][PJ_Columna].equals("3")) {
+                ImageView BloqueDestino = new ImageView(new Image("/proyecto2/Assets/BloqueDestino.png"));
+                Fisic.add(BloqueDestino, PJ_Columna, PJ_Fila);
+            } else {
+                ImageView tierra = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
+                Fisic.add(tierra, PJ_Columna, PJ_Fila);
+            }
+            ImageView PersonajeMove = new ImageView(new Image("/proyecto2/Assets/Personaje.png"));
+            Fisic.add(PersonajeMove, ruta.get(i).columna, ruta.get(i).fila);
+            MatrizNumber[PJ_Fila][PJ_Columna] = "0";
+            MatrizNumber[ruta.get(i).fila][ruta.get(i).columna] = "4";
+            if (MatrizRespaldo[PJ_Fila][PJ_Columna].equals("3")) {
+                MatrizNumber[PJ_Fila][PJ_Columna] = "3";
+            } else {
+                MatrizNumber[PJ_Fila][PJ_Columna] = "0";
+            }
+            PJ_Columna = ruta.get(i).columna;
+            PJ_Fila = ruta.get(i).fila;
+        }
     }
 
     public void setTimeout(Runnable runnable, int delay) {
@@ -521,8 +531,9 @@ public class ViewGameController implements Initializable {
         System.out.println("Posición de la celda: x=" + columnIndex + ", y=" + rowIndex);
         Posicion inicio = new Posicion(PJ_Fila, PJ_Columna);
         Posicion objetivo = new Posicion(rowIndex, columnIndex);
-        for (int i = 0; i < obtenerRutaMasCorta(MatrizNumber, inicio, objetivo).size(); i++) {
-            System.out.println(obtenerRutaMasCorta(MatrizNumber, inicio, objetivo).get(i).columna + " " + obtenerRutaMasCorta(MatrizNumber, inicio, objetivo).get(i).fila);
-        }
+
+        List<Posicion> ruta = obtenerRutaMasCorta(MatrizNumber, inicio, objetivo);
+        MoverRuta(ruta);
+
     }
 }
