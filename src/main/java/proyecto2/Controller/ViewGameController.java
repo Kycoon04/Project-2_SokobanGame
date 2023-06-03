@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 import java.util.ResourceBundle;
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,6 +28,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.util.Duration;
 import proyecto2.util.FlowController;
 import proyecto2.util.Posicion;
 
@@ -294,16 +296,16 @@ public class ViewGameController implements Initializable {
                 }
                 cajaLibre = true;
                 if (CajaEsquina(MatrizNumber, OperacionX, OperacionY)) {
-                flowController.setPerdio(true);
-                FlowController.getInstance().goMain("ViewMenu");
-            }
+                    flowController.setPerdio(true);
+                    FlowController.getInstance().goMain("ViewMenu");
+                }
             } else {
                 cajaLibre = false;
             }
 
         } else {
             if (MatrizRespaldo[PJ_Fila][PJ_Columna].equals("3")) {
-                Fisic.add(BloqueDestino, PJ_Columna, PJ_Fila);                  
+                Fisic.add(BloqueDestino, PJ_Columna, PJ_Fila);
             } else {
                 Fisic.add(Respaldo, PJ_Columna, PJ_Fila);
             }
@@ -486,37 +488,37 @@ public class ViewGameController implements Initializable {
     }
 
     private void MoverRuta(List<Posicion> ruta) {
-        for (int i = 1; i < ruta.size(); i++) {
-            try {
-                Thread.sleep(0, 10000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            int currentIteration = i;
+        float counter = 0;
 
-            Platform.runLater(() -> {
+        for (int i = 1; i < ruta.size(); i++) {
+            PauseTransition delayAppearance = new PauseTransition(Duration.seconds(counter));
+            final int index = i;
+
+            delayAppearance.setOnFinished(event -> {
                 if (MatrizRespaldo[PJ_Fila][PJ_Columna].equals("3")) {
                     ImageView BloqueDestino = new ImageView(new Image("/proyecto2/Assets/BloqueDestino.png"));
                     Fisic.add(BloqueDestino, PJ_Columna, PJ_Fila);
-                    BloqueDestino.setOnMouseClicked(event -> ObtenerPosicion(event));
+                    BloqueDestino.setOnMouseClicked(mouseevent -> ObtenerPosicion(mouseevent));
                 } else {
                     ImageView tierra = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
                     Fisic.add(tierra, PJ_Columna, PJ_Fila);
-                    tierra.setOnMouseClicked(event -> ObtenerPosicion(event));
+                    tierra.setOnMouseClicked(mouseevent -> ObtenerPosicion(mouseevent));
                 }
                 ImageView PersonajeMove = new ImageView(new Image("/proyecto2/Assets/Personaje.png"));
-                Fisic.add(PersonajeMove, ruta.get(currentIteration).columna, ruta.get(currentIteration).fila);
+                Fisic.add(PersonajeMove, ruta.get(index).columna, ruta.get(index).fila);
                 MatrizNumber[PJ_Fila][PJ_Columna] = "0";
-                MatrizNumber[ruta.get(currentIteration).fila][ruta.get(currentIteration).columna] = "4";
+                MatrizNumber[ruta.get(index).fila][ruta.get(index).columna] = "4";
                 if (MatrizRespaldo[PJ_Fila][PJ_Columna].equals("3")) {
                     MatrizNumber[PJ_Fila][PJ_Columna] = "3";
                 } else {
                     MatrizNumber[PJ_Fila][PJ_Columna] = "0";
                 }
-                PJ_Columna = ruta.get(currentIteration).columna;
-                PJ_Fila = ruta.get(currentIteration).fila;
-            });
+                PJ_Columna = ruta.get(index).columna;
+                PJ_Fila = ruta.get(index).fila;
 
+            });
+            delayAppearance.play();
+            counter += 0.15;
         }
 
     }
