@@ -27,21 +27,13 @@ public class ViewMenuController implements Initializable {
     private BorderPane ViewMain;
     @FXML
     private BorderPane ViewNiveles;
-    @FXML
     private BorderPane ViewDerrota;
-    @FXML
     private BorderPane ViewVictoria;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         ViewMain.toFront();
-        if(FlowController.getInstance().isPerdio()){
-        ViewDerrota.toFront();
-        }else{
-        if(FlowController.getInstance().isGano()){
-        ViewVictoria.toFront();
-        }
-        } 
+        
         NivelEnSeleccion(FlowController.getNivel());
     }
 

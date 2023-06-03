@@ -33,6 +33,7 @@ import proyecto2.util.FlowController;
 import proyecto2.util.Posicion;
 
 public class ViewGameController implements Initializable {
+
     private FlowController flowController;
     private String[][] MatrizNumber = new String[10][10];
     private String[][] MatrizRespaldo = new String[10][10];
@@ -47,6 +48,10 @@ public class ViewGameController implements Initializable {
     private GridPane Fisic;
     @FXML
     private BorderPane root;
+    @FXML
+    private BorderPane ViewVictoria;
+    @FXML
+    private BorderPane ViewDerrota;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -253,7 +258,7 @@ public class ViewGameController implements Initializable {
         if (!verificarBorde(PJ_Fila, PJ_Columna, desplazamientoFila, desplazamientoColumna)) {
             MoverCaja(desplazamientoFila, desplazamientoColumna, PersonajeMove);
         }
-        PosibleVictoria();  
+        PosibleVictoria();
         //Analiza si los espacios meta y las cajas estan en la misma posicion, esto cada vez que se mueve una caja (Muy optimizado Douglas lo confirmaría...)
     }
 
@@ -272,19 +277,19 @@ public class ViewGameController implements Initializable {
 
                 if (MatrizRespaldo[PJ_Fila + desplazamientoFila][PJ_Columna + desplazamientoColumna].equals("3")) {
                     MatrizNumber[PJ_Fila + desplazamientoFila][PJ_Columna + desplazamientoColumna] = "3";
-                    Fisic.add(SiguienteRespaldo(PJ_Fila + desplazamientoFila, PJ_Columna+ desplazamientoColumna), PJ_Columna + desplazamientoColumna, PJ_Fila+ desplazamientoFila);
+                    Fisic.add(SiguienteRespaldo(PJ_Fila + desplazamientoFila, PJ_Columna + desplazamientoColumna), PJ_Columna + desplazamientoColumna, PJ_Fila + desplazamientoFila);
                 } else {
                     MatrizNumber[PJ_Fila + desplazamientoFila][PJ_Columna + desplazamientoColumna] = "0"; //problema aqui de perder el 3
-                    Fisic.add(SiguienteRespaldo(PJ_Fila + desplazamientoFila, PJ_Columna+ desplazamientoColumna), PJ_Columna + desplazamientoColumna, PJ_Fila+ desplazamientoFila);
+                    Fisic.add(SiguienteRespaldo(PJ_Fila + desplazamientoFila, PJ_Columna + desplazamientoColumna), PJ_Columna + desplazamientoColumna, PJ_Fila + desplazamientoFila);
                 }
 
                 MatrizNumber[OperacionX][OperacionY] = "2";
-                
+
                 Fisic.add(SiguienteRespaldo(PJ_Fila, PJ_Columna), PJ_Columna, PJ_Fila);
                 cajaLibre = true;
                 if (CajaEsquina(MatrizNumber, OperacionX, OperacionY)) {
-                    flowController.setPerdio(true);
-                    FlowController.getInstance().goMain("ViewMenu");
+                    ViewDerrota.toFront();
+                    System.out.println("hola");
                 }
             } else {
                 cajaLibre = false;
@@ -310,13 +315,18 @@ public class ViewGameController implements Initializable {
 
     public boolean CajaEsquina(String[][] matrix, int x, int y) {
         boolean Paralelo = false;
-        if (matrix[x + 1][y].equals("1") && matrix[x][y - 1].equals("1") ||matrix[x - 1][y].equals("1") && matrix[x][y + 1].equals("1")) {
-            System.out.println("a");return true;
-        }
-        if (matrix[x][y - 1].equals("1") && matrix[x + 1][y].equals("1")) {
+        if (matrix[x + 1][y].equals("1") && matrix[x][y - 1].equals("1") || matrix[x - 1][y].equals("1") && matrix[x][y + 1].equals("1")) {
             return true;
         }
-
+        if (matrix[x][y - 1].equals("1") && matrix[x + 1][y].equals("1") || matrix[x][y + 1].equals("1") && matrix[x - 1][y].equals("1")) {
+            return true;
+        }
+        if (matrix[x][y + 1].equals("1") && matrix[x + 1][y].equals("1") || matrix[x][y + 1].equals("1") && matrix[x + 1][y].equals("1")) {
+            return true;
+        }
+        if (matrix[x][y - 1].equals("1") && matrix[x - 1][y].equals("1") || matrix[x][y - 1].equals("1") && matrix[x - 1][y].equals("1")) {
+            return true;
+        }
         return false;
     }
 
@@ -329,8 +339,7 @@ public class ViewGameController implements Initializable {
                 }
                 if (NumCajasTotalAux == 0) {
                     ActualizarNivelesDispo();
-                    flowController.setGano(true);
-                    FlowController.getInstance().goMain("ViewMenu");
+                    ViewVictoria.toFront();
                     return true;
                 }
             }
@@ -407,7 +416,6 @@ public class ViewGameController implements Initializable {
 
     @FXML
     private void Resetear(ActionEvent event) {
-
         NumCajasTotal = 0;
         CargarMatriz(numeros);
         Pintar(MatrizNumber);
