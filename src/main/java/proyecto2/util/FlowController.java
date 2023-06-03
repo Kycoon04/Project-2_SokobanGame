@@ -115,7 +115,7 @@ public class FlowController {
         return INSTANCE;
     }
 
-    public int getNivel() {
+    public static int getNivel() {
         return Nivel;
     }
 

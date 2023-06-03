@@ -10,6 +10,7 @@ import javafx.scene.layout.BorderPane;
 import proyecto2.util.FlowController;
 
 public class ViewMenuController implements Initializable {
+    Button pressedButton;
     @FXML
     private Button Nivel1;
     @FXML
@@ -40,7 +41,8 @@ public class ViewMenuController implements Initializable {
         if(FlowController.getInstance().isGano()){
         ViewVictoria.toFront();
         }
-        }
+        } 
+        NivelEnSeleccion(FlowController.getNivel());
     }
 
     @FXML
@@ -52,6 +54,13 @@ public class ViewMenuController implements Initializable {
 
     @FXML
     private void Met_Niveles(ActionEvent event) {
+        Nivel1.getStyleClass().remove("nivel-seleccionado");
+        Nivel2.getStyleClass().remove("nivel-seleccionado");
+        Nivel3.getStyleClass().remove("nivel-seleccionado");
+        Nivel4.getStyleClass().remove("nivel-seleccionado");
+        Nivel5.getStyleClass().remove("nivel-seleccionado");
+        Nivel6.getStyleClass().remove("nivel-seleccionado");
+        pressedButton.getStyleClass().add("nivel-seleccionado");
         Nivel2.setDisable(!FlowController.isNivel2());
         Nivel3.setDisable(!FlowController.isNivel3());
         Nivel4.setDisable(!FlowController.isNivel4());
@@ -71,31 +80,66 @@ public class ViewMenuController implements Initializable {
 
     @FXML
     private void Selecionado(ActionEvent event) {
-        Button pressedButton = (Button) event.getSource();
+        pressedButton = (Button) event.getSource();
         int nivel = 0;
+        Nivel1.getStyleClass().remove("nivel-seleccionado");
+        Nivel2.getStyleClass().remove("nivel-seleccionado");
+        Nivel3.getStyleClass().remove("nivel-seleccionado");
+        Nivel4.getStyleClass().remove("nivel-seleccionado");
+        Nivel5.getStyleClass().remove("nivel-seleccionado");
+        Nivel6.getStyleClass().remove("nivel-seleccionado");
         switch (pressedButton.getId()) {
             case "Nivel1":
                 nivel = 1;
+                pressedButton.getStyleClass().add("nivel-seleccionado");
                 break;
             case "Nivel2":
                 nivel = 2;
+                pressedButton.getStyleClass().add("nivel-seleccionado");
                 break;
             case "Nivel3":
                 nivel = 3;
+                pressedButton.getStyleClass().add("nivel-seleccionado");
                 break;
             case "Nivel4":
                 nivel = 4;
+                pressedButton.getStyleClass().add("nivel-seleccionado");
                 break;
             case "Nivel5":
                 nivel = 5;
+                pressedButton.getStyleClass().add("nivel-seleccionado");
                 break;
             case "Nivel6":
                 nivel = 6;
+                pressedButton.getStyleClass().add("nivel-seleccionado");
                 break;
             default:
                 break;
         }
-
         FlowController.setNivel(nivel);
+    }
+    public void NivelEnSeleccion(int Nivel){ 
+        switch (Nivel) {
+            case 1:
+                pressedButton = Nivel1;
+                break;
+            case 2:
+                pressedButton = Nivel2;
+                break;
+            case 3:
+                pressedButton = Nivel3;
+                break;
+            case 4:
+                pressedButton = Nivel4;
+                break;
+            case 5:
+                pressedButton = Nivel5;
+                break;
+            case 6:
+                pressedButton = Nivel6;
+                break;
+            default:
+                break;
+        }
     }
 }

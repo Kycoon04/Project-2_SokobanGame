@@ -27,3 +27,7 @@
     -fx-border-width: 2px;
     -fx-border-radius: 5px;
 }
+.nivel-seleccionado {
+    -fx-background-color: rgba(50, 51, 57, 0.5);
+    -fx-background-radius:10;
+}

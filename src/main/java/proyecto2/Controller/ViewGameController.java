@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 import java.util.ResourceBundle;
-import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,8 +27,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Text;
-import javafx.util.Duration;
 import proyecto2.util.FlowController;
 import proyecto2.util.Posicion;
 
@@ -51,8 +48,6 @@ public class ViewGameController implements Initializable {
     private GridPane Fisic;
     @FXML
     private BorderPane root;
-    @FXML
-    private Text NivelActual;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -285,29 +280,30 @@ public class ViewGameController implements Initializable {
 
                 if (MatrizRespaldo[PJ_Fila + desplazamientoFila][PJ_Columna + desplazamientoColumna].equals("3")) {
                     MatrizNumber[PJ_Fila + desplazamientoFila][PJ_Columna + desplazamientoColumna] = "3";
+                    Fisic.add(BloqueDestino, PJ_Columna + desplazamientoColumna, PJ_Fila + desplazamientoFila);
                 } else {
                     MatrizNumber[PJ_Fila + desplazamientoFila][PJ_Columna + desplazamientoColumna] = "0"; //problema aqui de perder el 3
                     Fisic.add(tierra, PJ_Columna + desplazamientoColumna, PJ_Fila + desplazamientoFila);
                 }
 
                 MatrizNumber[OperacionX][OperacionY] = "2";
-
                 if (MatrizRespaldo[PJ_Fila][PJ_Columna].equals("3")) {
                     Fisic.add(BloqueDestino, PJ_Columna, PJ_Fila);
                 } else {
                     Fisic.add(Respaldo, PJ_Columna, PJ_Fila);
                 }
                 cajaLibre = true;
-            } else {
-                cajaLibre = false;
-            }
-            if (CajaEsquina(MatrizNumber, OperacionX, OperacionY)) {
+                if (CajaEsquina(MatrizNumber, OperacionX, OperacionY)) {
                 flowController.setPerdio(true);
                 FlowController.getInstance().goMain("ViewMenu");
             }
+            } else {
+                cajaLibre = false;
+            }
+
         } else {
             if (MatrizRespaldo[PJ_Fila][PJ_Columna].equals("3")) {
-                Fisic.add(BloqueDestino, PJ_Columna, PJ_Fila);
+                Fisic.add(BloqueDestino, PJ_Columna, PJ_Fila);                  
             } else {
                 Fisic.add(Respaldo, PJ_Columna, PJ_Fila);
             }
@@ -342,7 +338,7 @@ public class ViewGameController implements Initializable {
         if (matrix[x][y - 1].equals("1")) {
             count++;
         }
-        if (matrix[x][y + 1].equals("1") && !Paralelo) {
+        if (matrix[x][y + 1].equals("1")) {
             count++;
         }
         return count >= 2;
@@ -394,7 +390,7 @@ public class ViewGameController implements Initializable {
     }
 
     public ImageView SiguienteRespaldo(int fila, int columna) {
-        switch (MatrizNumber[fila][columna]) {
+        switch (MatrizRespaldo[fila][columna]) {
             case "0":
                 return new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
             case "2":
@@ -490,39 +486,39 @@ public class ViewGameController implements Initializable {
     }
 
     private void MoverRuta(List<Posicion> ruta) {
-        for (int i = 1; i < ruta.size(); i++) {   
-        try {
-            Thread.sleep(0,10000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-         int currentIteration = i;
-         
-        Platform.runLater(() -> {
-            if (MatrizRespaldo[PJ_Fila][PJ_Columna].equals("3")) {
-                ImageView BloqueDestino = new ImageView(new Image("/proyecto2/Assets/BloqueDestino.png"));
-                Fisic.add(BloqueDestino, PJ_Columna, PJ_Fila);
-                BloqueDestino.setOnMouseClicked(event -> ObtenerPosicion(event));
-            } else {
-                ImageView tierra = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
-                Fisic.add(tierra, PJ_Columna, PJ_Fila);
-                tierra.setOnMouseClicked(event -> ObtenerPosicion(event));
+        for (int i = 1; i < ruta.size(); i++) {
+            try {
+                Thread.sleep(0, 10000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-            ImageView PersonajeMove = new ImageView(new Image("/proyecto2/Assets/Personaje.png"));
-            Fisic.add(PersonajeMove, ruta.get(currentIteration).columna, ruta.get(currentIteration).fila);
-            MatrizNumber[PJ_Fila][PJ_Columna] = "0";
-            MatrizNumber[ruta.get(currentIteration).fila][ruta.get(currentIteration).columna] = "4";
-            if (MatrizRespaldo[PJ_Fila][PJ_Columna].equals("3")) {
-                MatrizNumber[PJ_Fila][PJ_Columna] = "3";
-            } else {
+            int currentIteration = i;
+
+            Platform.runLater(() -> {
+                if (MatrizRespaldo[PJ_Fila][PJ_Columna].equals("3")) {
+                    ImageView BloqueDestino = new ImageView(new Image("/proyecto2/Assets/BloqueDestino.png"));
+                    Fisic.add(BloqueDestino, PJ_Columna, PJ_Fila);
+                    BloqueDestino.setOnMouseClicked(event -> ObtenerPosicion(event));
+                } else {
+                    ImageView tierra = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
+                    Fisic.add(tierra, PJ_Columna, PJ_Fila);
+                    tierra.setOnMouseClicked(event -> ObtenerPosicion(event));
+                }
+                ImageView PersonajeMove = new ImageView(new Image("/proyecto2/Assets/Personaje.png"));
+                Fisic.add(PersonajeMove, ruta.get(currentIteration).columna, ruta.get(currentIteration).fila);
                 MatrizNumber[PJ_Fila][PJ_Columna] = "0";
-            }
-           PJ_Columna = ruta.get(currentIteration).columna;
-           PJ_Fila = ruta.get(currentIteration).fila;
-        });
+                MatrizNumber[ruta.get(currentIteration).fila][ruta.get(currentIteration).columna] = "4";
+                if (MatrizRespaldo[PJ_Fila][PJ_Columna].equals("3")) {
+                    MatrizNumber[PJ_Fila][PJ_Columna] = "3";
+                } else {
+                    MatrizNumber[PJ_Fila][PJ_Columna] = "0";
+                }
+                PJ_Columna = ruta.get(currentIteration).columna;
+                PJ_Fila = ruta.get(currentIteration).fila;
+            });
 
         }
-        
+
     }
 
     public void setTimeout(Runnable runnable, int delay) {

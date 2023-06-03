@@ -13,95 +13,51 @@
 
 <StackPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto2.Controller.ViewMenuController">
    <children>
-      <BorderPane fx:id="ViewNiveles" maxHeight="680.0" maxWidth="1000.0" minHeight="680.0" minWidth="1000.0" prefHeight="680.0" prefWidth="1000.0" style="-fx-background-color: #49b8fa;" stylesheets="@BotonSelecionado.css">
+      <BorderPane fx:id="ViewVictoria" maxHeight="680.0" maxWidth="1000.0" minHeight="680.0" minWidth="1000.0" prefHeight="680.0" prefWidth="1000.0" stylesheets="@BotonSelecionado.css">
          <center>
-            <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0">
+            <Pane maxHeight="343.0" maxWidth="300.0" minHeight="50.0" minWidth="200.0" prefHeight="343.0" prefWidth="300.0" style="-fx-background-color: white; -fx-border-color: black; -fx-border-width: 4px; -fx-border-radius: 30px; -fx-background-radius: 32px;" BorderPane.alignment="CENTER">
                <children>
-                  <ImageView fitHeight="680.0" fitWidth="1000.0" layoutY="117.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Assets/background.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="114.0" fitWidth="417.0" layoutX="292.0" layoutY="117.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Assets/Logo.png" />
-                     </image>
-                  </ImageView>
-                  <Button fx:id="Nivel1" contentDisplay="CENTER" layoutX="75.0" layoutY="236.0" mnemonicParsing="false" onAction="#Selecionado" prefHeight="0.0" prefWidth="33.0" text="1">
+                  <Text layoutX="69.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="¡Ganaste!">
                      <font>
-                        <Font name="System Bold" size="48.0" />
+                        <Font name="System Bold" size="36.0" />
                      </font>
+                  </Text>
+                  <Button contentDisplay="CENTER" layoutX="33.0" layoutY="246.0" mnemonicParsing="false" onAction="#Volver" prefHeight="83.0" prefWidth="217.0" text="Volver" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                      <graphic>
-                        <ImageView fitHeight="87.0" fitWidth="72.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="63.0" fitWidth="199.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../Assets/NivelDisponible.png" />
+                              <Image url="@../Assets/buttonLong_beige.png" />
                            </image>
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="Nivel2" contentDisplay="CENTER" layoutX="226.0" layoutY="290.0" mnemonicParsing="false" onAction="#Selecionado" prefHeight="0.0" prefWidth="33.0" text="2">
+                  <Text layoutX="15.0" layoutY="137.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Si deseas repetir el nivel, entra en el panel de niveles y vuelva a selecionar el nivel!" textAlignment="CENTER" wrappingWidth="271.04296875">
                      <font>
-                        <Font name="System Bold" size="48.0" />
+                        <Font size="19.0" />
                      </font>
-                     <graphic>
-                        <ImageView fitHeight="87.0" fitWidth="72.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../Assets/NivelDisponible.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button fx:id="Nivel3" contentDisplay="CENTER" layoutX="366.0" layoutY="236.0" mnemonicParsing="false" onAction="#Selecionado" prefHeight="0.0" prefWidth="33.0" text="3">
+                  </Text>
+               </children>
+            </Pane>
+         </center>
+      </BorderPane>
+      <BorderPane fx:id="ViewDerrota" layoutX="10.0" layoutY="10.0" maxHeight="680.0" maxWidth="1000.0" minHeight="680.0" minWidth="1000.0" prefHeight="680.0" prefWidth="1000.0" stylesheets="@BotonSelecionado.css">
+         <center>
+            <Pane maxHeight="343.0" maxWidth="300.0" minHeight="50.0" minWidth="200.0" prefHeight="343.0" prefWidth="300.0" style="-fx-background-color: white; -fx-border-color: black; -fx-border-width: 4px; -fx-border-radius: 30px; -fx-background-radius: 32px;" BorderPane.alignment="CENTER">
+               <children>
+                  <Text layoutX="69.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="¡Perdiste!">
                      <font>
-                        <Font name="System Bold" size="48.0" />
+                        <Font name="System Bold" size="36.0" />
                      </font>
+                  </Text>
+                  <Button contentDisplay="CENTER" layoutX="33.0" layoutY="246.0" mnemonicParsing="false" onAction="#Volver" prefHeight="83.0" prefWidth="217.0" text="Volver" textAlignment="CENTER">
                      <graphic>
-                        <ImageView fitHeight="87.0" fitWidth="72.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../Assets/NivelDisponible.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button fx:id="Nivel4" contentDisplay="CENTER" layoutX="506.0" layoutY="290.0" mnemonicParsing="false" onAction="#Selecionado" prefHeight="0.0" prefWidth="33.0" text="4">
-                     <font>
-                        <Font name="System Bold" size="48.0" />
-                     </font>
-                     <graphic>
-                        <ImageView fitHeight="87.0" fitWidth="72.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../Assets/NivelDisponible.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button fx:id="Nivel5" contentDisplay="CENTER" layoutX="646.0" layoutY="236.0" mnemonicParsing="false" onAction="#Selecionado" prefHeight="0.0" prefWidth="33.0" text="5">
-                     <font>
-                        <Font name="System Bold" size="48.0" />
-                     </font>
-                     <graphic>
-                        <ImageView fitHeight="87.0" fitWidth="72.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../Assets/NivelDisponible.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button fx:id="Nivel6" contentDisplay="CENTER" layoutX="786.0" layoutY="290.0" mnemonicParsing="false" onAction="#Selecionado" prefHeight="0.0" prefWidth="33.0" text="6">
-                     <font>
-                        <Font name="System Bold" size="48.0" />
-                     </font>
-                     <graphic>
-                        <ImageView fitHeight="87.0" fitWidth="72.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../Assets/NivelDisponible.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button contentDisplay="CENTER" layoutX="366.0" layoutY="575.0" mnemonicParsing="false" onAction="#Volver" text="Volver" textAlignment="CENTER">
-                     <graphic>
-                        <ImageView fitHeight="90.0" fitWidth="244.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="63.0" fitWidth="199.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../Assets/buttonLong_beige.png" />
                            </image>
@@ -115,7 +71,7 @@
                      </cursor>
                   </Button>
                </children>
-            </AnchorPane>
+            </Pane>
          </center>
       </BorderPane>
       <BorderPane fx:id="ViewMain" maxHeight="680.0" maxWidth="1000.0" minHeight="680.0" minWidth="1000.0" prefHeight="680.0" prefWidth="1000.0" style="-fx-background-color: #49b8fa;" stylesheets="@BotonSelecionado.css">
@@ -181,18 +137,95 @@
               </AnchorPane>
           </center>
       </BorderPane>
-      <BorderPane fx:id="ViewDerrota" layoutX="10.0" layoutY="10.0" maxHeight="680.0" maxWidth="1000.0" minHeight="680.0" minWidth="1000.0" prefHeight="680.0" prefWidth="1000.0" stylesheets="@BotonSelecionado.css">
+      <BorderPane fx:id="ViewNiveles" maxHeight="680.0" maxWidth="1000.0" minHeight="680.0" minWidth="1000.0" prefHeight="680.0" prefWidth="1000.0" style="-fx-background-color: #49b8fa;" stylesheets="@BotonSelecionado.css">
          <center>
-            <Pane maxHeight="343.0" maxWidth="300.0" minHeight="50.0" minWidth="200.0" prefHeight="343.0" prefWidth="300.0" style="-fx-background-color: white; -fx-border-color: black; -fx-border-width: 4px; -fx-border-radius: 30px; -fx-background-radius: 32px;" BorderPane.alignment="CENTER">
+            <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0">
                <children>
-                  <Text layoutX="69.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="¡Perdiste!">
+                  <ImageView fitHeight="680.0" fitWidth="1000.0" layoutY="117.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Assets/background.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="114.0" fitWidth="417.0" layoutX="292.0" layoutY="117.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Assets/Logo.png" />
+                     </image>
+                  </ImageView>
+                  <Button fx:id="Nivel1" contentDisplay="CENTER" layoutX="75.0" layoutY="236.0" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#Selecionado" prefHeight="100.0" prefWidth="100.0" text="1">
                      <font>
-                        <Font name="System Bold" size="36.0" />
+                        <Font name="System Bold" size="48.0" />
                      </font>
-                  </Text>
-                  <Button contentDisplay="CENTER" layoutX="33.0" layoutY="246.0" mnemonicParsing="false" onAction="#Volver" prefHeight="83.0" prefWidth="217.0" text="Volver" textAlignment="CENTER">
                      <graphic>
-                        <ImageView fitHeight="63.0" fitWidth="199.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="87.0" fitWidth="72.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Assets/NivelDisponible.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="Nivel2" contentDisplay="CENTER" layoutX="226.0" layoutY="290.0" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#Selecionado" prefHeight="100.0" prefWidth="100.0" text="2">
+                     <font>
+                        <Font name="System Bold" size="48.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="87.0" fitWidth="72.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Assets/NivelDisponible.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="Nivel3" contentDisplay="CENTER" layoutX="366.0" layoutY="236.0" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#Selecionado" prefHeight="100.0" prefWidth="100.0" text="3">
+                     <font>
+                        <Font name="System Bold" size="48.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="87.0" fitWidth="72.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Assets/NivelDisponible.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="Nivel4" contentDisplay="CENTER" layoutX="506.0" layoutY="290.0" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#Selecionado" prefHeight="100.0" prefWidth="100.0" text="4">
+                     <font>
+                        <Font name="System Bold" size="48.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="87.0" fitWidth="72.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Assets/NivelDisponible.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="Nivel5" contentDisplay="CENTER" layoutX="646.0" layoutY="236.0" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#Selecionado" prefHeight="100.0" prefWidth="100.0" text="5">
+                     <font>
+                        <Font name="System Bold" size="48.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="87.0" fitWidth="72.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Assets/NivelDisponible.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="Nivel6" contentDisplay="CENTER" layoutX="786.0" layoutY="290.0" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#Selecionado" prefHeight="100.0" prefWidth="100.0" text="6">
+                     <font>
+                        <Font name="System Bold" size="48.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="87.0" fitWidth="72.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Assets/NivelDisponible.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button contentDisplay="CENTER" layoutX="366.0" layoutY="575.0" mnemonicParsing="false" onAction="#Volver" text="Volver" textAlignment="CENTER">
+                     <graphic>
+                        <ImageView fitHeight="90.0" fitWidth="244.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../Assets/buttonLong_beige.png" />
                            </image>
@@ -206,40 +239,7 @@
                      </cursor>
                   </Button>
                </children>
-            </Pane>
-         </center>
-      </BorderPane>
-      <BorderPane fx:id="ViewVictoria" maxHeight="680.0" maxWidth="1000.0" minHeight="680.0" minWidth="1000.0" prefHeight="680.0" prefWidth="1000.0" stylesheets="@BotonSelecionado.css">
-         <center>
-            <Pane maxHeight="343.0" maxWidth="300.0" minHeight="50.0" minWidth="200.0" prefHeight="343.0" prefWidth="300.0" style="-fx-background-color: white; -fx-border-color: black; -fx-border-width: 4px; -fx-border-radius: 30px; -fx-background-radius: 32px;" BorderPane.alignment="CENTER">
-               <children>
-                  <Text layoutX="69.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="¡Ganaste!">
-                     <font>
-                        <Font name="System Bold" size="36.0" />
-                     </font>
-                  </Text>
-                  <Button contentDisplay="CENTER" layoutX="33.0" layoutY="246.0" mnemonicParsing="false" onAction="#Volver" prefHeight="83.0" prefWidth="217.0" text="Volver" textAlignment="CENTER">
-                     <font>
-                        <Font name="System Bold" size="24.0" />
-                     </font>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                     <graphic>
-                        <ImageView fitHeight="63.0" fitWidth="199.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../Assets/buttonLong_beige.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Text layoutX="15.0" layoutY="137.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Si deseas repetir el nivel, entra en el panel de niveles y vuelva a selecionar el nivel!" textAlignment="CENTER" wrappingWidth="271.04296875">
-                     <font>
-                        <Font size="19.0" />
-                     </font>
-                  </Text>
-               </children>
-            </Pane>
+            </AnchorPane>
          </center>
       </BorderPane>
    </children>
