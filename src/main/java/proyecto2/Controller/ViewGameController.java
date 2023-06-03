@@ -33,9 +33,6 @@ import proyecto2.util.FlowController;
 import proyecto2.util.Posicion;
 
 public class ViewGameController implements Initializable {
-
-    ImageView Respaldo = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
-    ImageView Respaldo2 = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
     private FlowController flowController;
     private String[][] MatrizNumber = new String[10][10];
     private String[][] MatrizRespaldo = new String[10][10];
@@ -78,7 +75,8 @@ public class ViewGameController implements Initializable {
         ImageView imageView;
         StringBuilder builder = new StringBuilder();
         try {
-            File file = new File("src/main/resources/proyecto2/Levels/" + flowController.getNivel() + ".txt");
+            //File file = new File("src/main/resources/proyecto2/Levels/" + flowController.getNivel() + ".txt");
+            File file = new File("src/main/resources/proyecto2/Levels/4.txt");
             InputStream in = new FileInputStream(file);
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
             String line;
@@ -251,20 +249,12 @@ public class ViewGameController implements Initializable {
     }
 
     public void moverPersonaje(int desplazamientoFila, int desplazamientoColumna, ImageView PersonajeMove) {
-
         // Verifica si el campo donde quiere ir es un "1", osea, un borde
         if (!verificarBorde(PJ_Fila, PJ_Columna, desplazamientoFila, desplazamientoColumna)) {
-            if (!verificarBorde(PJ_Fila - desplazamientoFila, PJ_Columna - desplazamientoColumna, desplazamientoFila, desplazamientoColumna)) {
-                // Verifica si el campo anterior es un borde para hacer la copia de seguridad de la imagen
-                // Al ser ImageView, si yo camino, la imagen del bicho se repetirá en varias celdas
-                Respaldo2 = SiguienteRespaldo(PJ_Fila + desplazamientoFila, PJ_Columna + desplazamientoColumna);
-            } else {
-                Respaldo2 = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
-                Respaldo = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
-            }
             MoverCaja(desplazamientoFila, desplazamientoColumna, PersonajeMove);
         }
-        PosibleVictoria();  //Analiza si los espacios meta y las cajas estan en la misma posicion, esto cada vez que se mueve una caja (Muy optimizado Douglas lo confirmaría...)
+        PosibleVictoria();  
+        //Analiza si los espacios meta y las cajas estan en la misma posicion, esto cada vez que se mueve una caja (Muy optimizado Douglas lo confirmaría...)
     }
 
     public void MoverCaja(int desplazamientoFila, int desplazamientoColumna, ImageView PersonajeMove) {
@@ -282,18 +272,15 @@ public class ViewGameController implements Initializable {
 
                 if (MatrizRespaldo[PJ_Fila + desplazamientoFila][PJ_Columna + desplazamientoColumna].equals("3")) {
                     MatrizNumber[PJ_Fila + desplazamientoFila][PJ_Columna + desplazamientoColumna] = "3";
-                    Fisic.add(BloqueDestino, PJ_Columna + desplazamientoColumna, PJ_Fila + desplazamientoFila);
+                    Fisic.add(SiguienteRespaldo(PJ_Fila + desplazamientoFila, PJ_Columna+ desplazamientoColumna), PJ_Columna + desplazamientoColumna, PJ_Fila+ desplazamientoFila);
                 } else {
                     MatrizNumber[PJ_Fila + desplazamientoFila][PJ_Columna + desplazamientoColumna] = "0"; //problema aqui de perder el 3
-                    Fisic.add(tierra, PJ_Columna + desplazamientoColumna, PJ_Fila + desplazamientoFila);
+                    Fisic.add(SiguienteRespaldo(PJ_Fila + desplazamientoFila, PJ_Columna+ desplazamientoColumna), PJ_Columna + desplazamientoColumna, PJ_Fila+ desplazamientoFila);
                 }
 
                 MatrizNumber[OperacionX][OperacionY] = "2";
-                if (MatrizRespaldo[PJ_Fila][PJ_Columna].equals("3")) {
-                    Fisic.add(BloqueDestino, PJ_Columna, PJ_Fila);
-                } else {
-                    Fisic.add(Respaldo, PJ_Columna, PJ_Fila);
-                }
+                
+                Fisic.add(SiguienteRespaldo(PJ_Fila, PJ_Columna), PJ_Columna, PJ_Fila);
                 cajaLibre = true;
                 if (CajaEsquina(MatrizNumber, OperacionX, OperacionY)) {
                     flowController.setPerdio(true);
@@ -304,11 +291,7 @@ public class ViewGameController implements Initializable {
             }
 
         } else {
-            if (MatrizRespaldo[PJ_Fila][PJ_Columna].equals("3")) {
-                Fisic.add(BloqueDestino, PJ_Columna, PJ_Fila);
-            } else {
-                Fisic.add(Respaldo, PJ_Columna, PJ_Fila);
-            }
+            Fisic.add(SiguienteRespaldo(PJ_Fila, PJ_Columna), PJ_Columna, PJ_Fila);
         }
         if (cajaLibre) {
             Fisic.add(PersonajeMove, PJ_Columna + desplazamientoColumna, PJ_Fila + desplazamientoFila);
@@ -320,30 +303,21 @@ public class ViewGameController implements Initializable {
             } else {
                 MatrizNumber[PJ_Fila][PJ_Columna] = "0";
             }
-            Respaldo = Respaldo2;
             PJ_Columna += desplazamientoColumna;
             PJ_Fila += desplazamientoFila;
         }
     }
 
     public boolean CajaEsquina(String[][] matrix, int x, int y) {
-        int count = 0;
         boolean Paralelo = false;
-        // Verificar los 4 espacios alredor del bloque
-        if (matrix[x - 1][y].equals("1")) {
-            count++;
-            Paralelo = true;
+        if (matrix[x + 1][y].equals("1") && matrix[x][y - 1].equals("1") ||matrix[x - 1][y].equals("1") && matrix[x][y + 1].equals("1")) {
+            System.out.println("a");return true;
         }
-        if (matrix[x + 1][y].equals("1") && !Paralelo) {
-            count++;
+        if (matrix[x][y - 1].equals("1") && matrix[x + 1][y].equals("1")) {
+            return true;
         }
-        if (matrix[x][y - 1].equals("1")) {
-            count++;
-        }
-        if (matrix[x][y + 1].equals("1")) {
-            count++;
-        }
-        return count >= 2;
+
+        return false;
     }
 
     public boolean PosibleVictoria() {
@@ -520,7 +494,6 @@ public class ViewGameController implements Initializable {
             delayAppearance.play();
             counter += 0.15;
         }
-
     }
 
     public void setTimeout(Runnable runnable, int delay) {
