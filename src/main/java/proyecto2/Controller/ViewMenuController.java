@@ -27,8 +27,6 @@ public class ViewMenuController implements Initializable {
     private BorderPane ViewMain;
     @FXML
     private BorderPane ViewNiveles;
-    private BorderPane ViewDerrota;
-    private BorderPane ViewVictoria;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {

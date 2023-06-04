@@ -74,7 +74,6 @@ public class ViewGameController implements Initializable {
     }
 
     public void CargarNivel() {
-        //NivelActual.setText(Integer.toString(flowController.getNivel()));
         flowController = FlowController.getInstance();
         int i = 0;
         ImageView imageView;
@@ -410,14 +409,12 @@ public class ViewGameController implements Initializable {
     public static void guardarMatrizComoTexto(String[][] matriz, String nombreArchivo) {
         try {
             FileWriter writer = new FileWriter(nombreArchivo);
-
             for (String[] fila : matriz) {
                 for (String elemento : fila) {
                     writer.write(elemento + " ");
                 }
                 writer.write(System.lineSeparator());
             }
-
             writer.close();
             System.out.println("La matriz se ha guardado en el archivo " + nombreArchivo + " correctamente.");
         } catch (IOException e) {
