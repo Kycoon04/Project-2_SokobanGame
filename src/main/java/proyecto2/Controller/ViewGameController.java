@@ -81,7 +81,7 @@ public class ViewGameController implements Initializable {
         StringBuilder builder = new StringBuilder();
         try {
             //File file = new File("src/main/resources/proyecto2/Levels/" + flowController.getNivel() + ".txt");
-            File file = new File("src/main/resources/proyecto2/Levels/4.txt");
+            File file = new File("src/main/resources/proyecto2/Levels/5.txt");
             InputStream in = new FileInputStream(file);
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
             String line;
@@ -278,14 +278,17 @@ public class ViewGameController implements Initializable {
                 if (MatrizRespaldo[PJ_Fila + desplazamientoFila][PJ_Columna + desplazamientoColumna].equals("3")) {
                     MatrizNumber[PJ_Fila + desplazamientoFila][PJ_Columna + desplazamientoColumna] = "3";
                     Fisic.add(SiguienteRespaldo(PJ_Fila + desplazamientoFila, PJ_Columna + desplazamientoColumna), PJ_Columna + desplazamientoColumna, PJ_Fila + desplazamientoFila);
+                    SiguienteRespaldo(PJ_Fila, PJ_Columna).setOnMouseClicked(event -> ObtenerPosicion(event));
                 } else {
                     MatrizNumber[PJ_Fila + desplazamientoFila][PJ_Columna + desplazamientoColumna] = "0"; //problema aqui de perder el 3
                     Fisic.add(SiguienteRespaldo(PJ_Fila + desplazamientoFila, PJ_Columna + desplazamientoColumna), PJ_Columna + desplazamientoColumna, PJ_Fila + desplazamientoFila);
+                    SiguienteRespaldo(PJ_Fila, PJ_Columna).setOnMouseClicked(event -> ObtenerPosicion(event));
                 }
 
                 MatrizNumber[OperacionX][OperacionY] = "2";
 
                 Fisic.add(SiguienteRespaldo(PJ_Fila, PJ_Columna), PJ_Columna, PJ_Fila);
+                SiguienteRespaldo(PJ_Fila, PJ_Columna).setOnMouseClicked(event -> ObtenerPosicion(event));
                 cajaLibre = true;
                 if (CajaEsquina(MatrizNumber, OperacionX, OperacionY)) {
                     ViewDerrota.toFront();
@@ -297,6 +300,7 @@ public class ViewGameController implements Initializable {
 
         } else {
             Fisic.add(SiguienteRespaldo(PJ_Fila, PJ_Columna), PJ_Columna, PJ_Fila);
+            SiguienteRespaldo(PJ_Fila, PJ_Columna).setOnMouseClicked(event -> ObtenerPosicion(event));
         }
         if (cajaLibre) {
             Fisic.add(PersonajeMove, PJ_Columna + desplazamientoColumna, PJ_Fila + desplazamientoFila);
@@ -339,6 +343,7 @@ public class ViewGameController implements Initializable {
                 }
                 if (NumCajasTotalAux == 0) {
                     ActualizarNivelesDispo();
+                    guardarMatrizComoTexto(MatrizNumber, "MatrizPotente.txt");
                     ViewVictoria.toFront();
                     return true;
                 }
@@ -375,17 +380,29 @@ public class ViewGameController implements Initializable {
     }
 
     public ImageView SiguienteRespaldo(int fila, int columna) {
+        ImageView imageView;
         switch (MatrizRespaldo[fila][columna]) {
             case "0":
-                return new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
+                imageView = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
+                imageView.setOnMouseClicked(event -> ObtenerPosicion(event));
+                return imageView;
             case "2":
-                return new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
+                imageView = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
+                imageView.setOnMouseClicked(event -> ObtenerPosicion(event));
+                return imageView;
             case "3":
-                return new ImageView(new Image("/proyecto2/Assets/BloqueDestino.png"));
+                imageView = new ImageView(new Image("/proyecto2/Assets/BloqueDestino.png"));
+                imageView.setOnMouseClicked(event -> ObtenerPosicion(event));
+                return imageView;
             case "4":
-                return new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
+                imageView = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
+                imageView.setOnMouseClicked(event -> ObtenerPosicion(event));
+                return imageView;
             case "5":
-                return new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
+                imageView = new ImageView(new Image("/proyecto2/Assets/BaseTierra.png"));
+                imageView.setOnMouseClicked(event -> ObtenerPosicion(event));
+                return imageView;
+
         }
         return null;
     }
