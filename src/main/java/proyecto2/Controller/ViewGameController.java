@@ -21,6 +21,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -29,6 +30,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
+import proyecto2.Model.Jugador;
 import proyecto2.util.FlowController;
 import proyecto2.util.Posicion;
 
@@ -341,7 +348,6 @@ public class ViewGameController implements Initializable {
                 }
                 if (NumCajasTotalAux == 0) {
                     ActualizarNivelesDispo();
-                    guardarMatrizComoTexto(MatrizNumber, "MatrizPotente.txt");
                     ViewVictoria.toFront();
                     return true;
                 }
@@ -405,21 +411,15 @@ public class ViewGameController implements Initializable {
         return null;
     }
 
-    public static void guardarMatrizComoTexto(String[][] matriz, String nombreArchivo) {
-        try {
-            FileWriter writer = new FileWriter(nombreArchivo);
-            for (String[] fila : matriz) {
-                for (String elemento : fila) {
-                    writer.write(elemento + " ");
-                }
-                writer.write(System.lineSeparator());
+    public static String convertirMatrizAString(String[][] matriz) {
+        StringBuilder sb = new StringBuilder();
+        for (String[] fila : matriz) {
+            for (String elemento : fila) {
+                sb.append(elemento).append(" ");
             }
-            writer.close();
-            System.out.println("La matriz se ha guardado en el archivo " + nombreArchivo + " correctamente.");
-        } catch (IOException e) {
-            System.out.println("Se produjo un error al guardar la matriz en el archivo.");
-            e.printStackTrace();
+            sb.append(System.lineSeparator());
         }
+        return sb.toString();
     }
 
     @FXML
@@ -537,5 +537,28 @@ public class ViewGameController implements Initializable {
         Posicion objetivo = new Posicion(rowIndex, columnIndex);
         List<Posicion> ruta = obtenerRutaMasCorta(MatrizNumber, inicio, objetivo);
         MoverRuta(ruta);
+    }
+
+    @FXML
+    private void Exportar(ActionEvent event) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("proyecto2_Proyecto2_jar_1.0-SNAPSHOTPU");
+            EntityManager em = emf.createEntityManager();
+            EntityTransaction tx = em.getTransaction();
+            Query query = em.createQuery("SELECT p FROM Jugador p where p.jrNombre = :fname AND p.jrContrasena = :fcedula");
+            query.setParameter("fname", FlowController.getJugadorEnSesion().getJrNombre());
+            query.setParameter("fcedula", FlowController.getJugadorEnSesion().getJrContrasena());
+            List<Jugador> registro = query.getResultList();
+            tx.begin();
+            registro.get(0).setJrNivelguardado(convertirMatrizAString(MatrizNumber));
+            tx.commit();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Información");
+            alert.setHeaderText(null);
+            alert.setContentText("El jugador se ha insertado correctamente en la base de datos");
+            alert.showAndWait();
+            em.close();
+            emf.close();
+        
+        
     }
 }
