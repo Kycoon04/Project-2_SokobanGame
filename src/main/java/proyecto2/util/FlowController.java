@@ -15,9 +15,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import proyecto2.Controller.Controller;
+import proyecto2.Model.Jugador;
 
 public class FlowController {
-
+    private static Jugador JugadorEnSesion = null;
     private static FlowController INSTANCE = null;
     private static Stage mainStage;
     private static ResourceBundle idioma;
@@ -42,6 +43,14 @@ public class FlowController {
                 }
             }
         }
+    }
+
+    public static Jugador getJugadorEnSesion() {
+        return JugadorEnSesion;
+    }
+
+    public static void setJugadorEnSesion(Jugador JugadorEnSesion) {
+        FlowController.JugadorEnSesion = JugadorEnSesion;
     }
 
     public static boolean isPerdio() {

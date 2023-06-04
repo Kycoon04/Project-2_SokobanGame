@@ -1,0 +1,6 @@
+.text-field {
+    -fx-text-fill: black;
+}
+.date-picker .text-field {
+    -fx-text-fill: black;
+}

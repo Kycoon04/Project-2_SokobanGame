@@ -52,7 +52,7 @@ public class Jugador implements Serializable {
         this.jrId = jrId;
     }
 
-    public Jugador( String jrNombre, String jrContrasena, short jrNivelesganados) {
+    public Jugador(String jrNombre, String jrContrasena, short jrNivelesganados) {
         this.jrNombre = jrNombre;
         this.jrContrasena = jrContrasena;
         this.jrNivelesganados = jrNivelesganados;

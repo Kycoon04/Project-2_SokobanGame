@@ -16,7 +16,7 @@ requires javafx.graphics;
 requires jdk.unsupported;
 requires jdk.xml.dom;
 requires org.eclipse.persistence.moxy;
-
+    opens proyecto2.Model;
     opens proyecto2.Main;
     opens proyecto2.util;
     opens proyecto2.Controller;
