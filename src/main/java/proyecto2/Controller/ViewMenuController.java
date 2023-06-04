@@ -293,6 +293,15 @@ public class ViewMenuController implements Initializable {
 
     @FXML
     private void AceptarImportar(ActionEvent event) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("proyecto2_Proyecto2_jar_1.0-SNAPSHOTPU");
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        Query query = em.createQuery("SELECT p FROM Jugador p where p.jrNombre = :fname AND p.jrContrasena = :fcedula");
+        query.setParameter("fname", FlowController.getJugadorEnSesion().getJrNombre());
+        query.setParameter("fcedula", FlowController.getJugadorEnSesion().getJrContrasena());
+        List<Jugador> registro = query.getResultList();
+        FlowController.setNivelImportado(registro.get(0).getJrNivelguardado());
+        FlowController.setImportar(true);
     }
 
     @FXML

@@ -3,7 +3,6 @@ package proyecto2.Controller;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -82,28 +81,37 @@ public class ViewGameController implements Initializable {
 
     public void CargarNivel() {
         flowController = FlowController.getInstance();
-        int i = 0;
-        ImageView imageView;
-        StringBuilder builder = new StringBuilder();
-        try {
-            File file = new File("src/main/resources/proyecto2/Levels/" + flowController.getNivel() + ".txt");
-            InputStream in = new FileInputStream(file);
-            BufferedReader br = new BufferedReader(new InputStreamReader(in));
-            String line;
-            while ((line = br.readLine()) != null) {
-                builder.append(line + "\n");
-            }
-            br.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String file = builder.toString();
-        numeros = file.split("\\s+");
-        CargarMatriz(numeros);
 
-        numFila = Fisic.getRowCount();
-        numColumna = Fisic.getColumnCount();
-        Pintar(MatrizNumber);
+        if (!flowController.isImportar()) {
+            int i = 0;
+            ImageView imageView;
+            StringBuilder builder = new StringBuilder();
+            try {
+                File file = new File("src/main/resources/proyecto2/Levels/" + flowController.getNivel() + ".txt");
+                InputStream in = new FileInputStream(file);
+                BufferedReader br = new BufferedReader(new InputStreamReader(in));
+                String line;
+                while ((line = br.readLine()) != null) {
+                    builder.append(line + "\n");
+                }
+                br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            String file = builder.toString();
+            numeros = file.split("\\s+");
+            CargarMatriz(numeros);
+
+            numFila = Fisic.getRowCount();
+            numColumna = Fisic.getColumnCount();
+            Pintar(MatrizNumber);
+        } else {
+            numeros = FlowController.getNivelImportado().split("\\s+");
+            CargarMatrizDB(numeros);
+            numFila = Fisic.getRowCount();
+            numColumna = Fisic.getColumnCount();
+            Pintar(MatrizNumber);
+        }
     }
 
     public void Pintar(String[][] matriz) {
@@ -172,6 +180,20 @@ public class ViewGameController implements Initializable {
             }
         }
         cargarDosAleatorios();
+    }
+
+    public void CargarMatrizDB(String[] numeros) {
+        int index = 0;
+        for (int i = 0; i < MatrizNumber.length; i++) {
+            for (int j = 0; j < MatrizNumber.length; j++) {
+                MatrizNumber[i][j] = numeros[index];
+                MatrizRespaldo[i][j] = MatrizNumber[i][j];
+                if (numeros[index].equals("2")) {
+                    NumCajasTotal++;
+                }
+                index++;
+            }
+        }
     }
 
     public void cargarDosAleatorios() {
@@ -348,6 +370,7 @@ public class ViewGameController implements Initializable {
                 }
                 if (NumCajasTotalAux == 0) {
                     ActualizarNivelesDispo();
+                    flowController.setImportar(false);
                     ViewVictoria.toFront();
                     return true;
                 }
@@ -542,23 +565,22 @@ public class ViewGameController implements Initializable {
     @FXML
     private void Exportar(ActionEvent event) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("proyecto2_Proyecto2_jar_1.0-SNAPSHOTPU");
-            EntityManager em = emf.createEntityManager();
-            EntityTransaction tx = em.getTransaction();
-            Query query = em.createQuery("SELECT p FROM Jugador p where p.jrNombre = :fname AND p.jrContrasena = :fcedula");
-            query.setParameter("fname", FlowController.getJugadorEnSesion().getJrNombre());
-            query.setParameter("fcedula", FlowController.getJugadorEnSesion().getJrContrasena());
-            List<Jugador> registro = query.getResultList();
-            tx.begin();
-            registro.get(0).setJrNivelguardado(convertirMatrizAString(MatrizNumber));
-            tx.commit();
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Información");
-            alert.setHeaderText(null);
-            alert.setContentText("El jugador se ha insertado correctamente en la base de datos");
-            alert.showAndWait();
-            em.close();
-            emf.close();
-        
-        
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        Query query = em.createQuery("SELECT p FROM Jugador p where p.jrNombre = :fname AND p.jrContrasena = :fcedula");
+        query.setParameter("fname", FlowController.getJugadorEnSesion().getJrNombre());
+        query.setParameter("fcedula", FlowController.getJugadorEnSesion().getJrContrasena());
+        List<Jugador> registro = query.getResultList();
+        tx.begin();
+        registro.get(0).setJrNivelguardado(convertirMatrizAString(MatrizNumber));
+        tx.commit();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Información");
+        alert.setHeaderText(null);
+        alert.setContentText("El jugador se ha insertado correctamente en la base de datos");
+        alert.showAndWait();
+        em.close();
+        emf.close();
+
     }
 }

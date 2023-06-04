@@ -18,6 +18,7 @@ import proyecto2.Controller.Controller;
 import proyecto2.Model.Jugador;
 
 public class FlowController {
+    private static String NivelImportado;
     private static Jugador JugadorEnSesion = null;
     private static FlowController INSTANCE = null;
     private static Stage mainStage;
@@ -32,6 +33,7 @@ public class FlowController {
     static boolean Nivel6=false;
     static boolean Perdio=false;
     static boolean Gano=false;
+    static boolean Importar=false;
     private FlowController() {
     }
 
@@ -43,6 +45,22 @@ public class FlowController {
                 }
             }
         }
+    }
+
+    public static String getNivelImportado() {
+        return NivelImportado;
+    }
+
+    public static void setNivelImportado(String NivelImportado) {
+        FlowController.NivelImportado = NivelImportado;
+    }
+
+    public static boolean isImportar() {
+        return Importar;
+    }
+
+    public static void setImportar(boolean Importar) {
+        FlowController.Importar = Importar;
     }
 
     public static Jugador getJugadorEnSesion() {
