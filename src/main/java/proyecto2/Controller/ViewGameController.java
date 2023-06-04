@@ -572,12 +572,13 @@ public class ViewGameController implements Initializable {
         query.setParameter("fcedula", FlowController.getJugadorEnSesion().getJrContrasena());
         List<Jugador> registro = query.getResultList();
         tx.begin();
+        registro.get(0).setJrNivelesganados((short) FlowController.getNivel());
         registro.get(0).setJrNivelguardado(convertirMatrizAString(MatrizNumber));
         tx.commit();
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Información");
         alert.setHeaderText(null);
-        alert.setContentText("El jugador se ha insertado correctamente en la base de datos");
+        alert.setContentText("La partida se exporto correctamente en la base de datos");
         alert.showAndWait();
         em.close();
         emf.close();

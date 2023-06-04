@@ -301,8 +301,20 @@ public class ViewMenuController implements Initializable {
         query.setParameter("fcedula", FlowController.getJugadorEnSesion().getJrContrasena());
         List<Jugador> registro = query.getResultList();
         if (registro.get(0).getJrNivelguardado() != null) {
+            FlowController.setNivel(registro.get(0).getJrNivelesganados());
             FlowController.setNivelImportado(registro.get(0).getJrNivelguardado());
             FlowController.setImportar(true);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Información");
+            alert.setHeaderText(null);
+            alert.setContentText("Se cargo la partida correctamente");
+            alert.showAndWait();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Información");
+            alert.setHeaderText(null);
+            alert.setContentText("No tiene una partida cargada");
+            alert.showAndWait();
         }
     }
 
