@@ -300,8 +300,10 @@ public class ViewMenuController implements Initializable {
         query.setParameter("fname", FlowController.getJugadorEnSesion().getJrNombre());
         query.setParameter("fcedula", FlowController.getJugadorEnSesion().getJrContrasena());
         List<Jugador> registro = query.getResultList();
-        FlowController.setNivelImportado(registro.get(0).getJrNivelguardado());
-        FlowController.setImportar(true);
+        if (registro.get(0).getJrNivelguardado() != null) {
+            FlowController.setNivelImportado(registro.get(0).getJrNivelguardado());
+            FlowController.setImportar(true);
+        }
     }
 
     @FXML
