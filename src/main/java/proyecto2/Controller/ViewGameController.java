@@ -188,7 +188,7 @@ public class ViewGameController implements Initializable {
             for (int j = 0; j < MatrizNumber.length; j++) {
                 MatrizNumber[i][j] = numeros[index];
                 MatrizRespaldo[i][j] = MatrizNumber[i][j];
-                if (numeros[index].equals("2")) {
+                if (MatrizNumber[i][j].equals("3")) {
                     NumCajasTotal++;
                 }
                 index++;
