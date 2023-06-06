@@ -107,7 +107,7 @@ public class ViewGameController implements Initializable {
             Pintar(MatrizNumber);
         } else {
             numeros = FlowController.getNivelImportado().split("\\s+");
-            CargarMatrizDB(numeros);
+            CargarMatrizDB(numeros, FlowController.getNivelImportadoRespaldo().split("\\s+"));
             numFila = Fisic.getRowCount();
             numColumna = Fisic.getColumnCount();
             Pintar(MatrizNumber);
@@ -117,6 +117,7 @@ public class ViewGameController implements Initializable {
     public void Pintar(String[][] matriz) {
         int i = 0;
         ImageView imageView;
+        ImageView imageView2;
         for (int Fila = 0; Fila < numFila; Fila++) {
             for (int columna = 0; columna < numColumna; columna++) {
                 switch (matriz[Fila][columna]) {
@@ -168,6 +169,18 @@ public class ViewGameController implements Initializable {
                 i++;
             }
         }
+        for (int k = 0; k < MatrizNumber.length; k++) {
+            for (int j = 0; j < MatrizNumber.length; j++) {
+                imageView = new ImageView(new Image("/proyecto2/Assets/BloqueDestino.png"));
+                imageView2 = new ImageView(new Image("/proyecto2/Assets/Personaje.png"));
+                if (MatrizRespaldo[k][j].equals("3") && MatrizNumber[k][j].equals("4")) {
+                    Fisic.setColumnIndex(imageView, j);
+                        Fisic.setRowIndex(imageView, k);
+                        Fisic.add(imageView, j, k);
+                        Fisic.add(imageView2, j, k);
+                }
+            }
+        }
     }
 
     public void CargarMatriz(String[] numeros) {
@@ -182,12 +195,12 @@ public class ViewGameController implements Initializable {
         cargarDosAleatorios();
     }
 
-    public void CargarMatrizDB(String[] numeros) {
+    public void CargarMatrizDB(String[] numeros, String[] respaldo) {
         int index = 0;
         for (int i = 0; i < MatrizNumber.length; i++) {
             for (int j = 0; j < MatrizNumber.length; j++) {
+                MatrizRespaldo[i][j] = respaldo[index];
                 MatrizNumber[i][j] = numeros[index];
-                MatrizRespaldo[i][j] = MatrizNumber[i][j];
                 if (MatrizNumber[i][j].equals("3")) {
                     NumCajasTotal++;
                 }
@@ -574,6 +587,7 @@ public class ViewGameController implements Initializable {
         tx.begin();
         registro.get(0).setJrNivelesganados((short) FlowController.getNivel());
         registro.get(0).setJrNivelguardado(convertirMatrizAString(MatrizNumber));
+        registro.get(0).setJrNivelrespaldo(convertirMatrizAString(MatrizRespaldo));
         tx.commit();
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Información");

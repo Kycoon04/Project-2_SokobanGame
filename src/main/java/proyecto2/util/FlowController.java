@@ -19,6 +19,7 @@ import proyecto2.Model.Jugador;
 
 public class FlowController {
     private static String NivelImportado;
+    private static String NivelImportadoRespaldo;
     private static Jugador JugadorEnSesion = null;
     private static FlowController INSTANCE = null;
     private static Stage mainStage;
@@ -45,6 +46,14 @@ public class FlowController {
                 }
             }
         }
+    }
+
+    public static String getNivelImportadoRespaldo() {
+        return NivelImportadoRespaldo;
+    }
+
+    public static void setNivelImportadoRespaldo(String NivelImportadoRespaldo) {
+        FlowController.NivelImportadoRespaldo = NivelImportadoRespaldo;
     }
 
     public static String getNivelImportado() {

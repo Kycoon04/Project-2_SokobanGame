@@ -304,6 +304,7 @@ public class ViewMenuController implements Initializable {
             FlowController.setNivel(registro.get(0).getJrNivelesganados());
             FlowController.setNivelImportado(registro.get(0).getJrNivelguardado());
             FlowController.setImportar(true);
+            FlowController.setNivelImportadoRespaldo(registro.get(0).getJrNivelrespaldo());
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Información");
             alert.setHeaderText(null);

@@ -25,7 +25,8 @@ import javax.persistence.Table;
     @NamedQuery(name = "Jugador.findByJrContrasena", query = "SELECT j FROM Jugador j WHERE j.jrContrasena = :jrContrasena"),
     @NamedQuery(name = "Jugador.findByJrNivelesganados", query = "SELECT j FROM Jugador j WHERE j.jrNivelesganados = :jrNivelesganados"),
     @NamedQuery(name = "Jugador.findByJrNivelguardado", query = "SELECT j FROM Jugador j WHERE j.jrNivelguardado = :jrNivelguardado"),
-    @NamedQuery(name = "Jugador.findByJrId", query = "SELECT j FROM Jugador j WHERE j.jrId = :jrId")})
+    @NamedQuery(name = "Jugador.findByJrId", query = "SELECT j FROM Jugador j WHERE j.jrId = :jrId"),
+    @NamedQuery(name = "Jugador.findByJrNivelrespaldo", query = "SELECT j FROM Jugador j WHERE j.jrNivelrespaldo = :jrNivelrespaldo")})
 public class Jugador implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -44,6 +45,8 @@ public class Jugador implements Serializable {
     @Basic(optional = false)
     @Column(name = "JR_ID")
     private Integer jrId;
+    @Column(name = "JR_NIVELRESPALDO")
+    private String jrNivelrespaldo;
 
     public Jugador() {
     }
@@ -53,6 +56,7 @@ public class Jugador implements Serializable {
     }
 
     public Jugador(String jrNombre, String jrContrasena, short jrNivelesganados) {
+        this.jrId = jrId;
         this.jrNombre = jrNombre;
         this.jrContrasena = jrContrasena;
         this.jrNivelesganados = jrNivelesganados;
@@ -96,6 +100,14 @@ public class Jugador implements Serializable {
 
     public void setJrId(Integer jrId) {
         this.jrId = jrId;
+    }
+
+    public String getJrNivelrespaldo() {
+        return jrNivelrespaldo;
+    }
+
+    public void setJrNivelrespaldo(String jrNivelrespaldo) {
+        this.jrNivelrespaldo = jrNivelrespaldo;
     }
 
     @Override
