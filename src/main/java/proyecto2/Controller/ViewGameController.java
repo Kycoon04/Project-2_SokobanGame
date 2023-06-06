@@ -46,6 +46,7 @@ public class ViewGameController implements Initializable {
     private String[][] MatrizDevolver = new String[10][10];
     String[] numeros;
     int NumCajasTotal = 0;
+    int NumCajasExistentes = 0;
     private int PJ_Columna;
     private int PJ_Fila;
     private int numFila;
@@ -175,9 +176,9 @@ public class ViewGameController implements Initializable {
                 imageView2 = new ImageView(new Image("/proyecto2/Assets/Personaje.png"));
                 if (MatrizRespaldo[k][j].equals("3") && MatrizNumber[k][j].equals("4")) {
                     Fisic.setColumnIndex(imageView, j);
-                        Fisic.setRowIndex(imageView, k);
-                        Fisic.add(imageView, j, k);
-                        Fisic.add(imageView2, j, k);
+                    Fisic.setRowIndex(imageView, k);
+                    Fisic.add(imageView, j, k);
+                    Fisic.add(imageView2, j, k);
                 }
             }
         }
@@ -201,8 +202,8 @@ public class ViewGameController implements Initializable {
             for (int j = 0; j < MatrizNumber.length; j++) {
                 MatrizRespaldo[i][j] = respaldo[index];
                 MatrizNumber[i][j] = numeros[index];
-                if (MatrizNumber[i][j].equals("3")) {
-                    NumCajasTotal++;
+                if(MatrizRespaldo[i][j].equals("3")){
+                NumCajasTotal++;
                 }
                 index++;
             }
@@ -294,6 +295,7 @@ public class ViewGameController implements Initializable {
     }
 
     public void moverPersonaje(int desplazamientoFila, int desplazamientoColumna, ImageView PersonajeMove) {
+
         // Verifica si el campo donde quiere ir es un "1", osea, un borde
         if (!verificarBorde(PJ_Fila, PJ_Columna, desplazamientoFila, desplazamientoColumna)) {
             MoverCaja(desplazamientoFila, desplazamientoColumna, PersonajeMove);
@@ -349,6 +351,7 @@ public class ViewGameController implements Initializable {
 
             if (MatrizRespaldo[PJ_Fila][PJ_Columna].equals("3")) {
                 MatrizNumber[PJ_Fila][PJ_Columna] = "3";
+                System.out.println("holaaaa");
             } else {
                 MatrizNumber[PJ_Fila][PJ_Columna] = "0";
             }
