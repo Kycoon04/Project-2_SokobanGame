@@ -404,7 +404,7 @@
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Text>
-                  <Button contentDisplay="CENTER" layoutX="360.0" layoutY="308.0" mnemonicParsing="false" onAction="#AceptarImportar" text="Aceptar" textAlignment="CENTER">
+                  <Button contentDisplay="CENTER" layoutX="360.0" layoutY="308.0" mnemonicParsing="false" onAction="#AceptarImportar" text="Importar" textAlignment="CENTER">
                      <graphic>
                         <ImageView fitHeight="90.0" fitWidth="244.0" pickOnBounds="true" preserveRatio="true">
                            <image>

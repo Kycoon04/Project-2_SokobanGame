@@ -351,7 +351,6 @@ public class ViewGameController implements Initializable {
 
             if (MatrizRespaldo[PJ_Fila][PJ_Columna].equals("3")) {
                 MatrizNumber[PJ_Fila][PJ_Columna] = "3";
-                System.out.println("holaaaa");
             } else {
                 MatrizNumber[PJ_Fila][PJ_Columna] = "0";
             }
@@ -580,6 +579,8 @@ public class ViewGameController implements Initializable {
 
     @FXML
     private void Exportar(ActionEvent event) {
+        
+        if(FlowController.getJugadorEnSesion() != null){
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("proyecto2_Proyecto2_jar_1.0-SNAPSHOTPU");
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx = em.getTransaction();
@@ -599,6 +600,13 @@ public class ViewGameController implements Initializable {
         alert.showAndWait();
         em.close();
         emf.close();
-
+        }
+        else{
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Información");
+        alert.setHeaderText(null);
+        alert.setContentText("No hay una sesion iniciada");
+        alert.showAndWait();
+        }
     }
 }
