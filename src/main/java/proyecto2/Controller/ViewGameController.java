@@ -334,7 +334,6 @@ public class ViewGameController implements Initializable {
                 cajaLibre = true;
                 if (CajaEsquina(MatrizNumber, OperacionX, OperacionY)) {
                     ViewDerrota.toFront();
-                    System.out.println("hola");
                 }
             } else {
                 cajaLibre = false;
