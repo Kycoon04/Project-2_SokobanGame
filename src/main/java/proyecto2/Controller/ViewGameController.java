@@ -471,9 +471,10 @@ public class ViewGameController implements Initializable {
         Pintar(MatrizNumber);
     }
 
-    public List<Posicion> obtenerRutaMasCorta(String[][] matriz, Posicion inicio, Posicion objetivo) {
-        int filas = matriz.length;
-        int columnas = matriz[0].length;
+    public List<Posicion> obtenerRutaMasCorta(String[][] matriz, Posicion inicio, Posicion objetivo) { //Saray me regaña si no uso algún metodo de busqueda para
+        int filas = matriz.length;                                                                     //esto entonces use BFS Busqueda a lo ancho.
+        int columnas = matriz.length;
+        
         String ObstaculoBorde = "1";
         String ObstaculoCaja = "2";
         int[] FilasAlrededor = {-1, 0, 1, 0};
@@ -553,18 +554,7 @@ public class ViewGameController implements Initializable {
             counter += 0.15;
         }
     }
-
-    public void setTimeout(Runnable runnable, int delay) {
-        new Thread(() -> {
-            try {
-                Thread.sleep(delay);
-                runnable.run();
-            } catch (Exception e) {
-                System.err.println(e);
-            }
-        }).start();
-    }
-
+    
     @FXML
     private void ObtenerPosicion(MouseEvent event) {
         Node clickedNode = (Node) event.getSource();
