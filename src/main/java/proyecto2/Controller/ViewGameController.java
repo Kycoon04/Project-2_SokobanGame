@@ -471,37 +471,49 @@ public class ViewGameController implements Initializable {
         Pintar(MatrizNumber);
     }
 
-    public List<Posicion> obtenerRutaMasCorta(String[][] matriz, Posicion inicio, Posicion objetivo) { //Saray me regaña si no uso algún metodo de busqueda para
-        int filas = matriz.length;                                                                     //esto entonces use BFS Busqueda a lo ancho.
-        int columnas = matriz.length;
+public List<Posicion> obtenerRutaMasCorta(String[][] matriz, Posicion inicio, Posicion objetivo) {
+    //Saray me regaña si no uso algún metodo de busqueda para esto entonces use BFS 
+    int filas = matriz.length;                               
+    int columnas = matriz[0].length;
+    
+    String ObstaculoBorde = "1";
+    String ObstaculoCaja = "2";
+    
+    int[] FilasAlrededor = {-1, 0, 1, 0};
+    int[] ColumbasAlrededor = {0, 1, 0, -1};
+    
+    //Las posiciones visitadas con un nombre muy profesional
+    boolean[][] PaseoMiedo = new boolean[filas][columnas];
+    Posicion[][] PosicionesAnteriores = new Posicion[filas][columnas];
+    // Cola para el recorrido a lo ancho, basicamente lo principal del una busqueda a lo ancho
+    Queue<Posicion> cola = new LinkedList<>();
+    cola.offer(inicio);
+
+    while (!cola.isEmpty()) {
+        Posicion actual = cola.poll();
         
-        String ObstaculoBorde = "1";
-        String ObstaculoCaja = "2";
-        int[] FilasAlrededor = {-1, 0, 1, 0};
-        int[] ColumbasAlrededor = {0, 1, 0, -1};
-        boolean[][] PaseoMiedo = new boolean[filas][columnas];
-        Posicion[][] padre = new Posicion[filas][columnas];
-        Queue<Posicion> cola = new LinkedList<>();
-        cola.offer(inicio);
-
-        while (!cola.isEmpty()) {
-            Posicion actual = cola.poll();
-            if (actual.fila == objetivo.fila && actual.columna == objetivo.columna) {
-                return construirRuta(padre, inicio, objetivo);
-            }
-            for (int j = 0; j < 4; j++) {
-                int nuevaFila = actual.fila + FilasAlrededor[j];
-                int nuevaColumna = actual.columna + ColumbasAlrededor[j];
-
-                if (esPosicionValida(nuevaFila, nuevaColumna, filas, columnas) && !PaseoMiedo[nuevaFila][nuevaColumna] && !matriz[nuevaFila][nuevaColumna].equals(ObstaculoBorde) && !matriz[nuevaFila][nuevaColumna].equals(ObstaculoCaja)) {
-                    cola.offer(new Posicion(nuevaFila, nuevaColumna));
-                    PaseoMiedo[nuevaFila][nuevaColumna] = true;
-                    padre[nuevaFila][nuevaColumna] = actual;
-                }
+        // aqui pregunto si llegue
+        if (actual.fila == objetivo.fila && actual.columna == objetivo.columna) {
+            return construirRuta(PosicionesAnteriores, inicio, objetivo);
+        }
+        for (int j = 0; j < 4; j++) {
+            int nuevaFila = actual.fila + FilasAlrededor[j];
+            int nuevaColumna = actual.columna + ColumbasAlrededor[j];
+            // aqui pregunto si me tope con un obstaculo sorry por el if tan grande
+            if (esPosicionValida(nuevaFila, nuevaColumna, filas, columnas) && !PaseoMiedo[nuevaFila][nuevaColumna]
+                    && !matriz[nuevaFila][nuevaColumna].equals(ObstaculoBorde)
+                    && !matriz[nuevaFila][nuevaColumna].equals(ObstaculoCaja)) {
+                // Se agrega la nueva posición a la cola y se actualizan de que si es posible
+                cola.offer(new Posicion(nuevaFila, nuevaColumna));
+                PaseoMiedo[nuevaFila][nuevaColumna] = true;
+                PosicionesAnteriores[nuevaFila][nuevaColumna] = actual;
             }
         }
-        return new ArrayList<>();
     }
+    
+    // Si no se encontró una ruta, se devuelve una lista vacía
+    return new ArrayList<>();
+}
 
     private boolean esPosicionValida(int fila, int columna, int filas, int columnas) {
         return fila >= 0 && fila < filas && columna >= 0 && columna < columnas;
